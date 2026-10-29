@@ -38,7 +38,8 @@ a { color: inherit; }
   padding: 22px var(--gutter);
   background: linear-gradient(#000 30%, rgba(0, 0, 0, 0));
 }
-.mark { font-family: var(--serif); font-size: 22px; letter-spacing: 0.06em; text-decoration: none; }
+.mark { display: inline-flex; color: var(--ivory); text-decoration: none; }
+.mark svg { display: block; }
 .nav nav { display: flex; gap: clamp(18px, 3vw, 40px); }
 .nav nav a, .nav-cv { font-size: 15px; color: var(--ash); text-decoration: none; transition: color 0.2s; }
 .nav nav a:hover, .nav-cv:hover { color: var(--ivory); }
@@ -55,7 +56,7 @@ a { color: inherit; }
   padding: 120px var(--gutter) 96px;
   overflow: hidden;
 }
-.hero-map { position: absolute; inset: 0 0 0 38%; }
+.hero-map { position: absolute; inset: 0; }
 .network { width: 100%; height: 100%; display: block; }
 .hero-copy { position: relative; z-index: 2; max-width: 640px; }
 
@@ -93,7 +94,7 @@ a { color: inherit; }
 
 @media (max-width: 900px) {
   .hero { grid-template-columns: 1fr; align-items: end; padding-bottom: 140px; }
-  .hero-map { inset: 64px 0 36% 0; opacity: 0.6; }
+  .hero-map { inset: 0 0 34% 0; opacity: 0.85; }
 }
 
 /* page-load moment */
@@ -103,7 +104,7 @@ a { color: inherit; }
   .lede, .actions, .counter, .hero-map { animation: fade 1.4s ease both; animation-delay: 0.5s; }
   @keyframes rise { from { opacity: 0; transform: translateY(0.35em); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
   @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
-  @media (max-width: 900px) { .hero-map { animation-name: fadeDim; } @keyframes fadeDim { from { opacity: 0; } to { opacity: 0.6; } } }
+  @media (max-width: 900px) { .hero-map { animation-name: fadeDim; } @keyframes fadeDim { from { opacity: 0; } to { opacity: 0.85; } } }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
@@ -195,3 +196,33 @@ a { color: inherit; }
 
 .footer { max-width: var(--max); margin: 0 auto; padding: 28px var(--gutter) 40px; display: flex; justify-content: space-between; color: #5c5852; font-size: 14px; border-top: 1px solid var(--line); }
 .footer p { margin: 0; }
+
+/* ---------- 3D scene ---------- */
+.scene { position: absolute; inset: 0; }
+.scene canvas { width: 100% !important; height: 100% !important; display: block; }
+.scene::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(90deg, #000 0%, rgba(0,0,0,0.75) 22%, rgba(0,0,0,0) 48%), linear-gradient(0deg, #000 0%, rgba(0,0,0,0) 22%); }
+.scene-label { position: absolute; left: 0; top: 0; z-index: 1; pointer-events: none; will-change: transform; }
+.scene-label span { display: block; transform: translate(-50%, -140%); font-size: 12px; letter-spacing: 0.04em; color: var(--gold-soft);
+  padding: 5px 10px; border: 1px solid rgba(200,169,106,0.4); border-radius: 999px; background: rgba(0,0,0,0.6); white-space: nowrap; }
+@media (max-width: 900px) {
+  .scene::after { background: linear-gradient(0deg, #000 0%, rgba(0,0,0,0) 40%); }
+}
+
+/* ---------- Logo + intro ---------- */
+.footer-mark { display: inline-flex; align-items: center; gap: 10px; }
+.footer-mark svg { color: #5c5852; }
+.splash { position: fixed; inset: 0; z-index: 200; background: #000; display: grid; place-content: center; justify-items: center; gap: 22px; color: var(--ivory);
+  animation: splashOut 0.7s cubic-bezier(0.4, 0, 0.2, 1) 1.75s forwards; }
+html[data-intro="skip"] .splash { display: none; }
+@keyframes splashOut { to { opacity: 0; transform: scale(1.04); visibility: hidden; } }
+@media (prefers-reduced-motion: reduce) { .splash { display: none; } }
+.splash-name { margin: 0; font-family: var(--serif); font-size: 22px; letter-spacing: 0.2em; color: var(--ash); opacity: 0; animation: fade 0.8s ease 0.9s both; }
+.logo-animated .logo-o, .logo-animated .logo-heavy, .logo-animated .logo-thin { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.logo-animated .logo-heavy { animation: draw 0.7s cubic-bezier(0.6, 0, 0.2, 1) 0.1s forwards; }
+.logo-animated .logo-thin { animation: draw 0.55s cubic-bezier(0.6, 0, 0.2, 1) 0.75s forwards; }
+.logo-animated .logo-o { animation: draw 0.9s cubic-bezier(0.6, 0, 0.2, 1) 1.2s forwards; }
+.logo-animated .logo-hub { transform-origin: 60px 68px; transform: scale(0); animation: hub 0.6s cubic-bezier(0.3, 1.6, 0.5, 1) 0.7s forwards; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes hub { to { transform: scale(1); } }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }

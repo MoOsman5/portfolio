@@ -87,7 +87,14 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(sessionStorage.getItem("mo-intro")==="1")document.documentElement.dataset.intro="skip"}catch(e){}`,
+          }}
+        />
+      </head>
       <body>
         <a className="skip" href="#main">Skip to content</a>
         {children}

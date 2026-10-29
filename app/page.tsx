@@ -1,5 +1,7 @@
 import Image from "next/image";
-import NetworkCanvas from "@/components/NetworkCanvas";
+import HeroScene from "@/components/HeroScene";
+import Intro from "@/components/Intro";
+import Logo from "@/components/Logo";
 import ShipmentCounter from "@/components/ShipmentCounter";
 import Architecture from "@/components/Architecture";
 import { decisions, experience, projects, site, stack } from "@/lib/site";
@@ -7,8 +9,9 @@ import { decisions, experience, projects, site, stack } from "@/lib/site";
 export default function Home() {
   return (
     <>
+      <Intro />
       <header className="nav">
-        <a href="#top" className="mark" aria-label="Mohamed Osman, back to top">MO</a>
+        <a href="#top" className="mark" aria-label="Mohamed Osman, back to top"><Logo size={38} title="Mohamed Osman" /></a>
         <nav aria-label="Sections">
           <a href="#work">Work</a>
           <a href="#experience">Experience</a>
@@ -21,7 +24,7 @@ export default function Home() {
       <main id="main">
         <section className="hero" id="top" aria-labelledby="hero-title">
           <div className="hero-map">
-            <NetworkCanvas />
+            <HeroScene />
           </div>
           <div className="hero-copy">
             <h1 id="hero-title" className="display">
@@ -163,7 +166,7 @@ export default function Home() {
       </main>
 
       <footer className="footer">
-        <p>© 2026 Mohamed Osman</p>
+        <p className="footer-mark"><Logo size={22} title="" /> © 2026 Mohamed Osman</p>
         <p>Giza, Egypt</p>
       </footer>
     </>
