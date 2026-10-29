@@ -7,6 +7,8 @@ import ShipmentCounter from "@/components/ShipmentCounter";
 import Architecture from "@/components/Architecture";
 import Story from "@/components/Story";
 import { Chars, Words } from "@/components/Split";
+import SlabM from "@/components/SlabM";
+import Cosmos from "@/components/Cosmos";
 import { decisions, experience, projects, site, stack } from "@/lib/site";
 
 const marqueeA = ["NestJS", "PostgreSQL", "Redis", "Bull", "TypeScript", "Node.js", "PgBouncer", "Docker", "AWS", "GraphQL"];
@@ -16,6 +18,7 @@ export default function Home() {
   return (
     <>
       <Preloader />
+      <Cosmos />
       <Motion />
       <header className="nav">
         <a href="#top" className="mark" aria-label="Mohamed Osman, back to top" data-magnetic><Logo height={26} title="Mohamed Osman" /></a>
@@ -35,7 +38,7 @@ export default function Home() {
           </div>
           <div className="hero-copy">
             <h1 id="hero-title" className="display" aria-label="Mohamed Osman">
-              <span className="line"><Chars text="Mohamed" /></span>
+              <span className="line"><SlabM /><Chars text="ohamed" start={1} /></span>
               <span className="line indent"><Chars text="Osman" start={7} /></span>
             </h1>
             <p className="lede">
@@ -120,7 +123,7 @@ export default function Home() {
         <section className="section" id="projects" aria-labelledby="proj-title">
           <div className="section-head">
             <h2 id="proj-title" className="h2" data-reveal="mask"><Words text="Selected projects." /></h2>
-            <p className="intro" data-reveal="up">Products I built end to end, from the API to the storefront.</p>
+            <p className="intro" data-reveal="up">Products I build end to end, from the platform underneath to the screen people tap.</p>
           </div>
           <div className="projects">
             {projects.map((p) => (
@@ -132,6 +135,7 @@ export default function Home() {
                   <span className="project-glare" aria-hidden="true" />
                 </a>
                 <div className="project-text" data-reveal="up">
+                  {p.status ? <p className="status"><span aria-hidden="true" />{p.status}</p> : null}
                   <h3 className="h3">{p.name}</h3>
                   <p>{p.summary}</p>
                   <p className="tags">{p.stack.join(", ")}</p>

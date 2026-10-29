@@ -106,7 +106,32 @@ export const decisions = [
   },
 ];
 
-export const projects = [
+export const projects: {
+  name: string; href: string; image: string; width: number; height: number;
+  summary: string; stack: string[]; status?: string;
+}[] = [
+  {
+    name: "Mahsoom",
+    href: "https://mahsoom.com/",
+    image: "/images/mahsoom.webp",
+    width: 1400,
+    height: 669,
+    status: "In development",
+    summary:
+      "A multi-tenant business platform for small businesses in Egypt and the wider region, Arabic first. One modular kernel carries several products: a site builder that publishes a merchant's site on their own domain, and a WhatsApp inbox where every order becomes a tracked lead.",
+    stack: ["NestJS on Fastify", "PostgreSQL", "Drizzle", "Redis", "BullMQ", "Next.js", "Nx monorepo"],
+  },
+  {
+    name: "Kabtenna",
+    href: "https://kabtenna.com/",
+    image: "/images/kabtenna.webp",
+    width: 1400,
+    height: 669,
+    status: "Launching soon",
+    summary:
+      "Coaches and gyms in one app, across gym, football, swimming, padel and running. Gym owners run members, renewals and payments by cash, InstaPay or wallet with reminders on WhatsApp; trainees find a coach and train on a plan built for them. Built on the Mahsoom platform.",
+    stack: ["React Native (Expo)", "NestJS", "PostgreSQL", "Redis", "Next.js"],
+  },
   {
     name: "AKM E-Commerce",
     href: "https://akm-ecommerce-pnyk.vercel.app/",

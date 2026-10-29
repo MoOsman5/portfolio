@@ -93,42 +93,6 @@ export default function Motion() {
     onScroll();
 
     if (fine) {
-      // Cursor
-      const dot = document.createElement("div"), ring = document.createElement("div");
-      dot.className = "cursor-dot"; ring.className = "cursor-ring";
-      const label = document.createElement("span"); ring.appendChild(label);
-      document.body.append(dot, ring);
-      root.classList.add("has-cursor");
-      let mx = -100, my = -100, rx = -100, ry = -100, cid = 0;
-      const move = (e: PointerEvent) => { mx = e.clientX; my = e.clientY; dot.style.transform = `translate(${mx}px, ${my}px)`; };
-      const loop = () => {
-        rx += (mx - rx) * 0.16; ry += (my - ry) * 0.16;
-        ring.style.transform = `translate(${rx}px, ${ry}px)`;
-        cid = requestAnimationFrame(loop);
-      };
-      cid = requestAnimationFrame(loop);
-      const over = (e: PointerEvent) => {
-        const t = e.target as HTMLElement;
-        const lab = t.closest<HTMLElement>("[data-cursor]");
-        const hot = t.closest("a, button, [data-magnetic]");
-        ring.classList.toggle("is-hot", !!hot && !lab);
-        ring.classList.toggle("is-label", !!lab);
-        label.textContent = lab?.dataset.cursor || "";
-      };
-      const down = () => ring.classList.add("is-down"), up = () => ring.classList.remove("is-down");
-      const leave = () => { mx = my = -100; };
-      window.addEventListener("pointermove", move, { passive: true });
-      document.addEventListener("pointerover", over);
-      window.addEventListener("pointerdown", down);
-      window.addEventListener("pointerup", up);
-      document.addEventListener("pointerleave", leave);
-      cleanups.push(() => {
-        cancelAnimationFrame(cid); dot.remove(); ring.remove(); root.classList.remove("has-cursor");
-        window.removeEventListener("pointermove", move); document.removeEventListener("pointerover", over);
-        window.removeEventListener("pointerdown", down); window.removeEventListener("pointerup", up);
-        document.removeEventListener("pointerleave", leave);
-      });
-
       // Magnetic
       document.querySelectorAll<HTMLElement>("[data-magnetic]").forEach((el) => {
         const mm = (e: PointerEvent) => {
