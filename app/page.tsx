@@ -9,7 +9,7 @@ import Story from "@/components/Story";
 import { Chars, Words } from "@/components/Split";
 import SlabM from "@/components/SlabM";
 import Cosmos from "@/components/Cosmos";
-import { decisions, experience, projects, site, stack } from "@/lib/site";
+import { decisions, experience, visibleProjects as projects, site, stack } from "@/lib/site";
 
 const marqueeA = ["NestJS", "PostgreSQL", "Redis", "Bull", "TypeScript", "Node.js", "PgBouncer", "Docker", "AWS", "GraphQL"];
 const marqueeB = ["Partitioning", "Read replicas", "Zero-downtime migrations", "Queues", "Caching", "Multi-tenant SaaS", "OpenTelemetry", "Code review"];
@@ -43,8 +43,8 @@ export default function Home() {
             </h1>
             <p className="lede">
               Senior backend engineer in Giza. I designed and built a logistics platform that moves
-              twenty million shipments a year across Egypt for more than fifty thousand people, and led
-              the team of five that ran it.
+              twenty million shipments a year across Egypt for more than fifty thousand people, led the
+              team of five behind it, and went on to own its architecture.
             </p>
             <div className="actions">
               <a className="btn btn-gold" href={`mailto:${site.email}`} data-magnetic><span>Email me</span></a>

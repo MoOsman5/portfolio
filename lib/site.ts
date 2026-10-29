@@ -21,9 +21,19 @@ export const experience = [
     place: "Cairo",
     roles: [
       {
+        title: "Principal Architect",
+        from: "Aug 2026",
+        to: "Oct 2026",
+        points: [
+          "Owned the architecture of the platform I designed and built, as it scaled past 20M+ shipments a year.",
+          "Led its re-architecture into a multi-tenant SaaS for external courier companies: tenant isolation, data boundaries and API versioning.",
+          "Set backend architecture standards across the team: decision records, review gates and zero-downtime migration practice.",
+        ],
+      },
+      {
         title: "Backend Team Leader",
         from: "Nov 2024",
-        to: "Oct 2026",
+        to: "Aug 2026",
         points: [
           "Designed and built the company's logistics platform from scratch, replacing a purchased legacy system. It handles 20M+ shipments a year for 50,000+ users: 1,000+ staff, 5,000+ business customers, and the consignees tracking their shipments.",
           "Gathered requirements directly from operations, branch and fleet management, and turned them into system design.",
@@ -108,30 +118,8 @@ export const decisions = [
 
 export const projects: {
   name: string; href: string; image: string; width: number; height: number;
-  summary: string; stack: string[]; status?: string;
+  summary: string; stack: string[]; status?: string; unreleased?: boolean;
 }[] = [
-  {
-    name: "Mahsoom",
-    href: "https://mahsoom.com/",
-    image: "/images/mahsoom.webp",
-    width: 1400,
-    height: 669,
-    status: "In development",
-    summary:
-      "A multi-tenant business platform for small businesses in Egypt and the wider region, Arabic first. One modular kernel carries several products: a site builder that publishes a merchant's site on their own domain, and a WhatsApp inbox where every order becomes a tracked lead.",
-    stack: ["NestJS on Fastify", "PostgreSQL", "Drizzle", "Redis", "BullMQ", "Next.js", "Nx monorepo"],
-  },
-  {
-    name: "Kabtenna",
-    href: "https://kabtenna.com/",
-    image: "/images/kabtenna.webp",
-    width: 1400,
-    height: 669,
-    status: "Launching soon",
-    summary:
-      "Coaches and gyms in one app, across gym, football, swimming, padel and running. Gym owners run members, renewals and payments by cash, InstaPay or wallet with reminders on WhatsApp; trainees find a coach and train on a plan built for them. Built on the Mahsoom platform.",
-    stack: ["React Native (Expo)", "NestJS", "PostgreSQL", "Redis", "Next.js"],
-  },
   {
     name: "AKM E-Commerce",
     href: "https://akm-ecommerce-pnyk.vercel.app/",
@@ -161,3 +149,7 @@ export const stack = [
   { group: "Frontend", items: ["React", "Next.js", "React Native"] },
   { group: "Practice", items: ["Architecture Decision Records", "Zero-downtime migrations", "Code review", "Mentoring"] },
 ];
+
+// Unreleased projects can be flagged with `unreleased: true` and shown by setting SHOW_UNRELEASED.
+export const SHOW_UNRELEASED = false;
+export const visibleProjects = projects.filter((p) => SHOW_UNRELEASED || !p.unreleased);
