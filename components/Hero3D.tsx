@@ -69,7 +69,7 @@ export default function Hero3D() {
   useEffect(() => {
     const el = mount.current;
     if (!el) return;
-    if (!hasWebGL()) { setFallback(true); return; }
+    if (!hasWebGL()) { setFallback(true); window.__moScene = true; window.dispatchEvent(new Event("mo:scene")); return; }
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -244,6 +244,12 @@ export default function Hero3D() {
     };
     window.addEventListener("pointermove", onMove, { passive: true });
     let scroll = 0;
+    // Camera fly-in when the preloader opens.
+    let flyStart = -1;
+    const startFly = () => { if (flyStart < 0) flyStart = performance.now(); };
+    if (document.documentElement.classList.contains("is-ready")) startFly();
+    window.addEventListener("mo:ready", startFly);
+    const ease = (x: number) => 1 - Math.pow(1 - x, 4);
     const onScroll = () => { scroll = Math.min(1, window.scrollY / Math.max(1, H)); };
     window.addEventListener("scroll", onScroll, { passive: true });
 
@@ -251,7 +257,7 @@ export default function Hero3D() {
     const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible && !reduce) loop(); });
     io.observe(el);
 
-    let raf = 0, last = performance.now(), spawn = 0, time = 0, running = false;
+    let raf = 0, last = performance.now(), spawn = 0, time = 0, running = false, announced = false;
     const frame = (now: number) => {
       const dt = Math.min(0.05, (now - last) / 1000);
       last = now;
@@ -260,8 +266,15 @@ export default function Hero3D() {
       cur.x += (target.x - cur.x) * 0.04;
       cur.y += (target.y - cur.y) * 0.04;
       world.rotation.y = -0.38 + Math.sin(time * 0.09) * 0.18 + cur.x * 0.12;
-      camera.position.set(camBase.x + cur.x * 0.6, camBase.y - cur.y * 0.5 - scroll * 2.4, camBase.z - scroll * 3.2);
+      const fly = reduce ? 1 : flyStart < 0 ? 0 : ease(Math.min(1, (now - flyStart) / 2600));
+      const away = 1 - fly;
+      camera.position.set(
+        camBase.x + cur.x * 0.6 + away * 5,
+        camBase.y - cur.y * 0.5 - scroll * 2.4 + away * 9,
+        camBase.z - scroll * 3.2 + away * 7,
+      );
       camera.lookAt(0, 0.6 + scroll * 0.6, 0);
+      world.rotation.y += away * 1.1;
 
       if (hubRing) {
         const k = (time * 0.6) % 1;
@@ -306,6 +319,7 @@ export default function Hero3D() {
       dg.attributes.position.needsUpdate = true;
 
       renderer.render(scene, camera);
+      if (!announced) { announced = true; window.__moScene = true; window.dispatchEvent(new Event("mo:scene")); }
 
       if (label.current) {
         tmp.copy(hubTop).setY(hubTop.y + 0.25);
@@ -342,6 +356,7 @@ export default function Hero3D() {
       ro.disconnect(); io.disconnect();
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("mo:ready", startFly);
       document.removeEventListener("visibilitychange", onVis);
       disposables.forEach((d) => d.dispose());
       renderer.dispose();

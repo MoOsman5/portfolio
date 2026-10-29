@@ -31,10 +31,19 @@ export default function Architecture() {
   return (
     <svg viewBox="-2 0 1006 380" role="img" aria-label="Platform architecture diagram">
       <g fill="none" stroke="#C8A96A" strokeOpacity="0.55" strokeWidth="1">
-        {edges.map(([a, b]) => <path key={a + b} d={path(nodes[a], nodes[b])} />)}
+        {edges.map(([a, b], i) => (
+          <path key={a + b} className="arch-edge" d={path(nodes[a], nodes[b])} pathLength={1} style={{ ["--i" as string]: i }} />
+        ))}
+      </g>
+      <g className="arch-packets">
+        {edges.map(([a, b], i) => (
+          <circle key={a + b} r="2.6" fill="#E8D4A8">
+            <animateMotion dur={`${1.4 + (i % 4) * 0.35}s`} repeatCount="indefinite" path={path(nodes[a], nodes[b])} />
+          </circle>
+        ))}
       </g>
       {Object.entries(nodes).map(([k, n]) => (
-        <g key={k}>
+        <g key={k} className="arch-node">
           <rect x={n.x} y={n.y} width={n.w} height={H} rx="3" fill="#000" stroke={n.gold ? "#C8A96A" : "#3A3733"} />
           <text x={n.x + 16} y={n.y + 24} fill="#EDE8DF" fontSize="15" fontFamily="'Hanken Grotesk', sans-serif" fontWeight="600">{n.t}</text>
           <text x={n.x + 16} y={n.y + 42} fill="#8B867D" fontSize="12" fontFamily="'Hanken Grotesk', sans-serif">{n.s}</text>

@@ -1,24 +1,31 @@
 import Image from "next/image";
 import HeroScene from "@/components/HeroScene";
-import Intro from "@/components/Intro";
+import Preloader from "@/components/Preloader";
+import Motion from "@/components/Motion";
 import Logo from "@/components/Logo";
 import ShipmentCounter from "@/components/ShipmentCounter";
 import Architecture from "@/components/Architecture";
+import Story from "@/components/Story";
+import { Chars, Words } from "@/components/Split";
 import { decisions, experience, projects, site, stack } from "@/lib/site";
+
+const marqueeA = ["NestJS", "PostgreSQL", "Redis", "Bull", "TypeScript", "Node.js", "PgBouncer", "Docker", "AWS", "GraphQL"];
+const marqueeB = ["Partitioning", "Read replicas", "Zero-downtime migrations", "Queues", "Caching", "Multi-tenant SaaS", "OpenTelemetry", "Code review"];
 
 export default function Home() {
   return (
     <>
-      <Intro />
+      <Preloader />
+      <Motion />
       <header className="nav">
-        <a href="#top" className="mark" aria-label="Mohamed Osman, back to top"><Logo height={26} title="Mohamed Osman" /></a>
+        <a href="#top" className="mark" aria-label="Mohamed Osman, back to top" data-magnetic><Logo height={26} title="Mohamed Osman" /></a>
         <nav aria-label="Sections">
-          <a href="#work">Work</a>
-          <a href="#experience">Experience</a>
-          <a href="#projects">Projects</a>
-          <a href="#contact">Contact</a>
+          <a href="#work"><span className="roll" data-text="Work">Work</span></a>
+          <a href="#experience"><span className="roll" data-text="Experience">Experience</span></a>
+          <a href="#projects"><span className="roll" data-text="Projects">Projects</span></a>
+          <a href="#contact"><span className="roll" data-text="Contact">Contact</span></a>
         </nav>
-        <a className="nav-cv" href={site.cv} download>Download CV</a>
+        <a className="nav-cv" href={site.cv} download data-magnetic>Download CV</a>
       </header>
 
       <main id="main">
@@ -27,48 +34,51 @@ export default function Home() {
             <HeroScene />
           </div>
           <div className="hero-copy">
-            <h1 id="hero-title" className="display">
-              <span>Mohamed</span>
-              <span className="indent">Osman</span>
+            <h1 id="hero-title" className="display" aria-label="Mohamed Osman">
+              <span className="line"><Chars text="Mohamed" /></span>
+              <span className="line indent"><Chars text="Osman" start={7} /></span>
             </h1>
             <p className="lede">
               Senior backend engineer in Giza. I designed and built a logistics platform that moves
               twenty million shipments a year across Egypt, and led the team of five that ran it.
             </p>
             <div className="actions">
-              <a className="btn btn-gold" href={`mailto:${site.email}`}>Email me</a>
-              <a className="btn" href={site.cv} download>Download CV</a>
+              <a className="btn btn-gold" href={`mailto:${site.email}`} data-magnetic><span>Email me</span></a>
+              <a className="btn" href={site.cv} download data-magnetic><span>Download CV</span></a>
             </div>
           </div>
           <ShipmentCounter />
+          <a href="#work" className="scroll-cue" aria-label="Scroll to work"><span /></a>
         </section>
+
+        <Story />
 
         <section className="section" id="work" aria-labelledby="work-title">
           <div className="section-head">
-            <h2 id="work-title" className="h2">A platform built from nothing, for twenty million shipments a year.</h2>
-            <p className="intro">
-              ABS Courier was running on a purchased system that didn't fit how the business worked. I joined in 2024,
+            <h2 id="work-title" className="h2" data-reveal="mask"><Words text="A platform built from nothing, for twenty million shipments a year." /></h2>
+            <p className="intro" data-reveal="up">
+              ABS Courier was running on a purchased system that didn&apos;t fit how the business worked. I joined in 2024,
               proposed NestJS and PostgreSQL as the foundation for a replacement, and took it from requirements gathered
               with operations, branches and the fleet to the system the company runs on today.
             </p>
           </div>
 
-          <dl className="figures">
-            <div><dt>Shipments a year</dt><dd>20M+</dd></div>
-            <div><dt>People using it</dt><dd>1,000+</dd></div>
-            <div><dt>Faster responses with Redis</dt><dd>3.7×</dd></div>
-            <div><dt>Backend engineers led</dt><dd>5</dd></div>
+          <dl className="figures" data-reveal="up">
+            <div><dt>Shipments a year</dt><dd data-count="20" data-suffix="M+">20M+</dd></div>
+            <div><dt>People using it</dt><dd data-count="1000" data-suffix="+">1,000+</dd></div>
+            <div><dt>Faster responses with Redis</dt><dd data-count="3.7" data-decimals="1" data-suffix="×">3.7×</dd></div>
+            <div><dt>Backend engineers led</dt><dd data-count="5">5</dd></div>
           </dl>
 
-          <figure className="arch">
+          <figure className="arch" data-reveal="fade">
             <Architecture />
             <figcaption>How a request moves through the platform: Nginx in front of the NestJS API, Redis for hot reads, PgBouncer routing writes to a date-partitioned primary and reporting to replicas, and Bull queues feeding a dedicated worker.</figcaption>
           </figure>
 
-          <h3 className="h3">The decisions behind it</h3>
+          <h3 className="h3" data-reveal="mask"><Words text="The decisions behind it" /></h3>
           <ul className="decisions">
             {decisions.map((d) => (
-              <li key={d.problem}>
+              <li key={d.problem} data-reveal="up">
                 <p className="problem">{d.problem}</p>
                 <p className="answer">{d.answer}</p>
               </li>
@@ -78,11 +88,11 @@ export default function Home() {
 
         <section className="section" id="experience" aria-labelledby="exp-title">
           <div className="section-head">
-            <h2 id="exp-title" className="h2">Four years, from interfaces to infrastructure.</h2>
+            <h2 id="exp-title" className="h2" data-reveal="mask"><Words text="Four years, from interfaces to infrastructure." /></h2>
           </div>
           <ol className="timeline">
             {experience.map((job) => (
-              <li key={job.company} className="job">
+              <li key={job.company} className="job" data-reveal="up">
                 <div className="job-when">
                   {job.roles[job.roles.length - 1].from.split(" ")[1]}
                   <span aria-hidden="true">–</span>
@@ -109,16 +119,19 @@ export default function Home() {
 
         <section className="section" id="projects" aria-labelledby="proj-title">
           <div className="section-head">
-            <h2 id="proj-title" className="h2">Selected projects.</h2>
-            <p className="intro">Products I built end to end, from the API to the storefront.</p>
+            <h2 id="proj-title" className="h2" data-reveal="mask"><Words text="Selected projects." /></h2>
+            <p className="intro" data-reveal="up">Products I built end to end, from the API to the storefront.</p>
           </div>
           <div className="projects">
             {projects.map((p) => (
               <article key={p.name} className="project">
-                <a href={p.href} target="_blank" rel="noopener" className="project-shot" aria-label={`Open ${p.name} in a new tab`}>
-                  <Image src={p.image} alt={`${p.name} home page`} width={p.width} height={p.height} sizes="(max-width: 900px) 100vw, 80vw" />
+                <a href={p.href} target="_blank" rel="noopener" className="project-shot" aria-label={`Open ${p.name} in a new tab`} data-reveal="clip" data-tilt data-cursor="Visit">
+                  <span className="project-img" data-parallax="0.06">
+                    <Image src={p.image} alt={`${p.name} home page`} width={p.width} height={p.height} sizes="(max-width: 900px) 100vw, 80vw" />
+                  </span>
+                  <span className="project-glare" aria-hidden="true" />
                 </a>
-                <div className="project-text">
+                <div className="project-text" data-reveal="up">
                   <h3 className="h3">{p.name}</h3>
                   <p>{p.summary}</p>
                   <p className="tags">{p.stack.join(", ")}</p>
@@ -129,20 +142,27 @@ export default function Home() {
           </div>
         </section>
 
+        <div className="marquee" aria-hidden="true">
+          <div className="marquee-row"><div className="marquee-track">{[...marqueeA, ...marqueeA].map((t, i) => <span key={i}>{t}</span>)}</div></div>
+          <div className="marquee-row reverse"><div className="marquee-track">{[...marqueeB, ...marqueeB].map((t, i) => <span key={i}>{t}</span>)}</div></div>
+        </div>
+
         <section className="section about" id="about" aria-labelledby="about-title">
-          <Image className="portrait" src="/images/mohamed.webp" alt="Portrait of Mohamed Osman" width={600} height={600} />
+          <div className="portrait-wrap" data-reveal="clip">
+            <Image className="portrait" src="/images/mohamed.webp" alt="Portrait of Mohamed Osman" width={600} height={600} />
+          </div>
           <div>
-            <h2 id="about-title" className="h2">The person behind the queues.</h2>
-            <p>
+            <h2 id="about-title" className="h2" data-reveal="mask"><Words text="The person behind the queues." /></h2>
+            <p data-reveal="up">
               I like the unglamorous parts of software: the index that keeps a query flat at year three, the migration
               that ships without anyone noticing, the review comment that saves a teammate a week. I&apos;m studying
               computer science at Cairo University, competed in the Egyptian Collegiate Programming Contest in 2022,
               and spent almost three years teaching coding and robotics to kids with the Digital Egypt Cubs Initiative.
             </p>
-            <p>I work in Arabic and English, and I still ship React, Next.js and React Native when a product needs it.</p>
+            <p data-reveal="up">I work in Arabic and English, and I still ship React, Next.js and React Native when a product needs it.</p>
             <dl className="stack">
               {stack.map((s) => (
-                <div key={s.group}>
+                <div key={s.group} data-reveal="up">
                   <dt>{s.group}</dt>
                   <dd>{s.items.join(", ")}</dd>
                 </div>
@@ -152,22 +172,22 @@ export default function Home() {
         </section>
 
         <section className="contact" id="contact" aria-labelledby="contact-title">
-          <h2 id="contact-title" className="h2">Building something that has to keep up?</h2>
-          <a className="email" href={`mailto:${site.email}`}>{site.email}</a>
-          <ul className="contact-links">
-            <li><a href={site.phoneHref}>{site.phone}</a></li>
-            <li><a href={site.whatsapp} target="_blank" rel="noopener">WhatsApp</a></li>
-            <li><a href={site.linkedin} target="_blank" rel="noopener me">LinkedIn</a></li>
-            <li><a href={site.github} target="_blank" rel="noopener me">GitHub</a></li>
-            <li><a href={site.leetcode} target="_blank" rel="noopener me">LeetCode</a></li>
-            <li><a href={site.cv} download>Download CV</a></li>
+          <h2 id="contact-title" className="h2" data-reveal="mask"><Words text="Building something that has to keep up?" /></h2>
+          <a className="email" href={`mailto:${site.email}`} aria-label={`Email ${site.email}`} data-reveal="up"><Chars text={site.email} /></a>
+          <ul className="contact-links" data-reveal="up">
+            <li><a href={site.phoneHref}><span className="roll" data-text={site.phone}>{site.phone}</span></a></li>
+            <li><a href={site.whatsapp} target="_blank" rel="noopener"><span className="roll" data-text="WhatsApp">WhatsApp</span></a></li>
+            <li><a href={site.linkedin} target="_blank" rel="noopener me"><span className="roll" data-text="LinkedIn">LinkedIn</span></a></li>
+            <li><a href={site.github} target="_blank" rel="noopener me"><span className="roll" data-text="GitHub">GitHub</span></a></li>
+            <li><a href={site.leetcode} target="_blank" rel="noopener me"><span className="roll" data-text="LeetCode">LeetCode</span></a></li>
+            <li><a href={site.cv} download><span className="roll" data-text="Download CV">Download CV</span></a></li>
           </ul>
         </section>
       </main>
 
       <footer className="footer">
         <p className="footer-mark"><Logo height={16} title="" /> © 2026 Mohamed Osman</p>
-        <p>Giza, Egypt</p>
+        <a href="#top" className="to-top" data-magnetic>Back to top</a>
       </footer>
     </>
   );

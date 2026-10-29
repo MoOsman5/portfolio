@@ -6,6 +6,7 @@ import "@fontsource/hanken-grotesk/400.css";
 import "@fontsource/hanken-grotesk/500.css";
 import "@fontsource/hanken-grotesk/600.css";
 import "./globals.css";
+import "./motion.css";
 import { site } from "@/lib/site";
 
 const title = `${site.name} — ${site.role}`;
@@ -91,7 +92,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{if(sessionStorage.getItem("mo-intro")==="1")document.documentElement.dataset.intro="skip"}catch(e){}`,
+            __html: `document.documentElement.classList.add("js")`,
           }}
         />
       </head>
