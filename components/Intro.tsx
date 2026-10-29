@@ -18,7 +18,7 @@ export default function Intro() {
   if (gone) return null;
   return (
     <div className="splash" aria-hidden="true">
-      <Logo size={132} animated title="" />
+      <Logo height={110} animated title="" />
       <p className="splash-name">Mohamed Osman</p>
     </div>
   );

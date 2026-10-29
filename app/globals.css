@@ -212,17 +212,15 @@ a { color: inherit; }
 /* ---------- Logo + intro ---------- */
 .footer-mark { display: inline-flex; align-items: center; gap: 10px; }
 .footer-mark svg { color: #5c5852; }
+.mark svg { color: var(--ivory); }
 .splash { position: fixed; inset: 0; z-index: 200; background: #000; display: grid; place-content: center; justify-items: center; gap: 22px; color: var(--ivory);
   animation: splashOut 0.7s cubic-bezier(0.4, 0, 0.2, 1) 1.75s forwards; }
 html[data-intro="skip"] .splash { display: none; }
 @keyframes splashOut { to { opacity: 0; transform: scale(1.04); visibility: hidden; } }
 @media (prefers-reduced-motion: reduce) { .splash { display: none; } }
 .splash-name { margin: 0; font-family: var(--serif); font-size: 22px; letter-spacing: 0.2em; color: var(--ash); opacity: 0; animation: fade 0.8s ease 0.9s both; }
-.logo-animated .logo-o, .logo-animated .logo-heavy, .logo-animated .logo-thin { stroke-dasharray: 1; stroke-dashoffset: 1; }
-.logo-animated .logo-heavy { animation: draw 0.7s cubic-bezier(0.6, 0, 0.2, 1) 0.1s forwards; }
-.logo-animated .logo-thin { animation: draw 0.55s cubic-bezier(0.6, 0, 0.2, 1) 0.75s forwards; }
-.logo-animated .logo-o { animation: draw 0.9s cubic-bezier(0.6, 0, 0.2, 1) 1.2s forwards; }
-.logo-animated .logo-hub { transform-origin: 60px 68px; transform: scale(0); animation: hub 0.6s cubic-bezier(0.3, 1.6, 0.5, 1) 0.7s forwards; }
-@keyframes draw { to { stroke-dashoffset: 0; } }
-@keyframes hub { to { transform: scale(1); } }
+.logo-animated .logo-slab { transform-box: fill-box; transform-origin: 50% 100%; transform: scaleY(0); animation: slab 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+.logo-animated .logo-o { transform-box: fill-box; transform-origin: 50% 50%; opacity: 0; transform: scale(0.9); animation: oIn 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.8s forwards; }
+@keyframes slab { to { transform: scaleY(1); } }
+@keyframes oIn { to { opacity: 1; transform: scale(1); } }
 @keyframes fade { from { opacity: 0; } to { opacity: 1; } }

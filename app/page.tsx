@@ -11,7 +11,7 @@ export default function Home() {
     <>
       <Intro />
       <header className="nav">
-        <a href="#top" className="mark" aria-label="Mohamed Osman, back to top"><Logo size={38} title="Mohamed Osman" /></a>
+        <a href="#top" className="mark" aria-label="Mohamed Osman, back to top"><Logo height={26} title="Mohamed Osman" /></a>
         <nav aria-label="Sections">
           <a href="#work">Work</a>
           <a href="#experience">Experience</a>
@@ -166,7 +166,7 @@ export default function Home() {
       </main>
 
       <footer className="footer">
-        <p className="footer-mark"><Logo size={22} title="" /> © 2026 Mohamed Osman</p>
+        <p className="footer-mark"><Logo height={16} title="" /> © 2026 Mohamed Osman</p>
         <p>Giza, Egypt</p>
       </footer>
     </>

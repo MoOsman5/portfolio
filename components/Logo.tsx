@@ -1,24 +1,40 @@
-type Props = { size?: number; className?: string; title?: string; animated?: boolean };
+type Props = { height?: number; className?: string; title?: string; animated?: boolean };
 
 /**
- * The MO route mark: one route that forms an M inside an open O.
- * Heavy strokes are the part of the route already delivered, hairlines the part still in transit,
- * and the gold point is the hub everything passes through.
+ * The MO partition mark. The M is a table split into slabs, the way the shipment tables were
+ * partitioned by date; the O is a high-contrast Didone O. Ivory only, no enclosing shape.
  */
-export default function Logo({ size = 40, className, title = "Mohamed Osman", animated = false }: Props) {
+export function markPolygons(n: number) {
+  const x0 = 8, x1 = 78, top = 14, base = 86, valley = 72, gap = n > 7 ? 2.2 : 3.2;
+  const w = (x1 - x0 - gap * (n - 1)) / n, mid = (x0 + x1) / 2;
+  const ty = (x: number) => valley - ((valley - top) * Math.abs(x - mid)) / (mid - x0);
+  return Array.from({ length: n }, (_, i) => {
+    const a = x0 + i * (w + gap), b = a + w;
+    const [ya, yb] = i === 0 || i === n - 1 ? [top, top] : [ty(a), ty(b)];
+    return `${a.toFixed(2)},${base} ${a.toFixed(2)},${ya.toFixed(2)} ${b.toFixed(2)},${yb.toFixed(2)} ${b.toFixed(2)},${base}`;
+  });
+}
+
+export const O_PATH =
+  "M120 14 a32 36 0 1 1 0 72 a32 36 0 1 1 0 -72 Z M120 16.6 a21.5 33.4 0 1 0 0 66.8 a21.5 33.4 0 1 0 0 -66.8 Z";
+
+export default function Logo({ height = 28, className, title = "Mohamed Osman", animated = false }: Props) {
+  const n = height >= 60 ? 9 : 7;
   return (
     <svg
       className={[className, animated ? "logo-animated" : ""].filter(Boolean).join(" ")}
-      width={size}
-      height={size}
-      viewBox="0 0 120 120"
-      role="img"
-      aria-label={title}
+      width={(height * 160) / 100}
+      height={height}
+      viewBox="0 0 160 100"
+      role={title ? "img" : undefined}
+      aria-label={title || undefined}
+      aria-hidden={title ? undefined : true}
+      fill="currentColor"
     >
-      <path className="logo-o" d="M92.5 92.5 A46 46 0 1 0 27.5 92.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" pathLength={1} />
-      <path className="logo-heavy" d="M27.5 92.5 L27.5 37 L60 68" fill="none" stroke="currentColor" strokeWidth="4.8" strokeLinejoin="miter" pathLength={1} />
-      <path className="logo-thin" d="M60 68 L92.5 37 L92.5 92.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="miter" pathLength={1} />
-      <circle className="logo-hub" cx="60" cy="68" r="4.4" fill="#C8A96A" />
+      {markPolygons(n).map((p, i) => (
+        <polygon key={i} className="logo-slab" points={p} style={animated ? { animationDelay: `${0.08 * i}s` } : undefined} />
+      ))}
+      <path className="logo-o" fillRule="evenodd" d={O_PATH} />
     </svg>
   );
 }
