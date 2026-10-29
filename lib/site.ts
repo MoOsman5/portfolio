@@ -12,7 +12,7 @@ export const site = {
   leetcode: "https://leetcode.com/MoOsman_5/",
   cv: "/Mohamed-Osman-CV.pdf",
   description:
-    "Mohamed Osman is a senior backend engineer in Giza, Egypt. He designed and built ABS Courier's logistics platform from scratch, now handling 20M+ shipments a year, with NestJS, PostgreSQL, Bull queues and Redis.",
+    "Mohamed Osman is a senior backend engineer in Giza, Egypt. He designed and built ABS Courier's logistics platform from scratch, now handling 20M+ shipments a year for 50,000+ users, with NestJS, PostgreSQL, Bull queues and Redis.",
 };
 
 export const experience = [
@@ -25,7 +25,7 @@ export const experience = [
         from: "Nov 2024",
         to: "Oct 2026",
         points: [
-          "Designed and built the company's logistics platform from scratch, replacing a purchased legacy system. It handles 20M+ shipments a year for 1,000+ users.",
+          "Designed and built the company's logistics platform from scratch, replacing a purchased legacy system. It handles 20M+ shipments a year for 50,000+ users: 1,000+ staff, 5,000+ business customers, and the consignees tracking their shipments.",
           "Gathered requirements directly from operations, branch and fleet management, and turned them into system design.",
           "Led a team of five backend engineers: review standards, onboarding and mentoring.",
         ],

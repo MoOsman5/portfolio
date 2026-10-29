@@ -43,7 +43,8 @@ export default function Home() {
             </h1>
             <p className="lede">
               Senior backend engineer in Giza. I designed and built a logistics platform that moves
-              twenty million shipments a year across Egypt, and led the team of five that ran it.
+              twenty million shipments a year across Egypt for more than fifty thousand people, and led
+              the team of five that ran it.
             </p>
             <div className="actions">
               <a className="btn btn-gold" href={`mailto:${site.email}`} data-magnetic><span>Email me</span></a>
@@ -62,13 +63,13 @@ export default function Home() {
             <p className="intro" data-reveal="up">
               ABS Courier was running on a purchased system that didn&apos;t fit how the business worked. I joined in 2024,
               proposed NestJS and PostgreSQL as the foundation for a replacement, and took it from requirements gathered
-              with operations, branches and the fleet to the system the company runs on today.
+              with operations, branches and the fleet to the system the company runs on today. More than fifty thousand people use it: over a thousand staff, five thousand business customers, and the consignees tracking their deliveries.
             </p>
           </div>
 
           <dl className="figures" data-reveal="up">
             <div><dt>Shipments a year</dt><dd data-count="20" data-suffix="M+">20M+</dd></div>
-            <div><dt>People using it</dt><dd data-count="1000" data-suffix="+">1,000+</dd></div>
+            <div><dt>Users: staff, customers, consignees</dt><dd data-count="50" data-suffix="K+">50K+</dd></div>
             <div><dt>Faster responses with Redis</dt><dd data-count="3.7" data-decimals="1" data-suffix="×">3.7×</dd></div>
             <div><dt>Backend engineers led</dt><dd data-count="5">5</dd></div>
           </dl>
