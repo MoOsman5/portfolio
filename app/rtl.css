@@ -1,0 +1,51 @@
+/* ---------- Arabic, right to left ---------- */
+[dir="rtl"] body { font-family: "IBM Plex Sans Arabic", var(--sans); }
+[dir="rtl"] { --ar-serif: "Amiri", "Noto Naskh Arabic", var(--serif); }
+
+/* Arabic headings: Amiri, no Latin tracking, taller lines for the script */
+[dir="rtl"] .h2, [dir="rtl"] .h3, [dir="rtl"] .story-title, [dir="rtl"] .problem,
+[dir="rtl"] .story-coda, [dir="rtl"] .job-company, [dir="rtl"] .writing-title {
+  font-family: var(--ar-serif); font-weight: 700; letter-spacing: 0; font-style: normal;
+}
+[dir="rtl"] .h2 { line-height: 1.35; }
+[dir="rtl"] .h3, [dir="rtl"] .story-title { line-height: 1.45; }
+[dir="rtl"] .problem { line-height: 1.6; font-size: 22px; }
+[dir="rtl"] .lede, [dir="rtl"] .intro, [dir="rtl"] .story-body, [dir="rtl"] .answer, [dir="rtl"] .role ul, [dir="rtl"] .about p { line-height: 1.9; }
+[dir="rtl"] .w { padding-bottom: 0.25em; margin-bottom: -0.25em; }
+[dir="rtl"] .h3 [dir="ltr"], [dir="rtl"] h3[dir="ltr"] { font-family: var(--serif); font-weight: 400; }
+
+/* Hero name in Arabic */
+.display-ar { font-family: var(--ar-serif); font-weight: 700; letter-spacing: 0; line-height: 1.12; font-size: clamp(72px, 12vw, 188px); }
+.display-ar > .line { padding-bottom: 0.12em; margin-bottom: -0.04em; }
+[dir="rtl"] .display .indent { padding-left: 0; padding-right: 0.62em; }
+
+/* Mirror what sits on the left or right */
+[dir="rtl"] .counter { left: auto; right: var(--gutter); }
+[dir="rtl"] .scroll-cue { right: auto; left: var(--gutter); }
+[dir="rtl"] .role ul { padding-left: 0; padding-right: 1.1em; }
+[dir="rtl"] .decisions li:hover { padding-left: 0; padding-right: 18px; }
+[dir="rtl"] .decisions li::after, [dir="rtl"] .figures::before { transform-origin: 100% 50%; }
+[dir="rtl"] .figures::before { background: linear-gradient(270deg, var(--gold), var(--line) 60%); }
+[dir="rtl"] .timeline::before, [dir="rtl"] .timeline::after { left: auto; right: -28px; }
+[dir="rtl"] .job::before { left: auto; right: -32px; }
+@media (max-width: 1340px) {
+  [dir="rtl"] .timeline::before, [dir="rtl"] .timeline::after { right: -14px; }
+  [dir="rtl"] .job::before { right: -18px; }
+}
+@media (max-width: 720px) { [dir="rtl"] .timeline { margin-left: 0; margin-right: 14px; } }
+[dir="rtl"] .story-count { right: auto; left: 0; }
+[dir="rtl"] .scrollbar { transform-origin: 100% 50%; }
+[dir="rtl"] .writing-arrow { transform: scaleX(-1); }
+[dir="rtl"] .writing-list li[dir="ltr"] .writing-arrow { transform: none; }
+
+/* The 3D map stays where Egypt is; the copy moves to the right, so fade the scene from the right */
+[dir="rtl"] .scene::after {
+  background: linear-gradient(270deg, var(--black) 0%, rgba(var(--bg-rgb), 0.75) 22%, rgba(var(--bg-rgb), 0) 48%), linear-gradient(0deg, var(--black) 0%, rgba(var(--bg-rgb), 0) 22%);
+}
+@media (max-width: 900px) {
+  [dir="rtl"] .scene::after { background: linear-gradient(0deg, var(--black) 0%, rgba(var(--bg-rgb), 0) 40%); }
+}
+[dir="rtl"] .story-bar span { transform-origin: 100% 50%; }
+[dir="rtl"] .figures dd { text-align: right; }
+/* Keep Egypt where it is, but slide the map to the left so it clears the Arabic name */
+@media (min-width: 901px) { [dir="rtl"] .hero-map { inset: 0 44% 0 -44%; } [dir="rtl"] .scene::after { background: linear-gradient(0deg, var(--black) 0%, rgba(var(--bg-rgb), 0) 22%); } }

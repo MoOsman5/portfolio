@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Logo from "./Logo";
 import { site } from "@/lib/site";
+import SiteControls from "./SiteControls";
 
 /** Header for inner pages (Writing). The home page has its own in-page anchors. */
 export default function SiteNav() {
@@ -15,7 +16,10 @@ export default function SiteNav() {
         <Link href="/writing"><span className="roll" data-text="Writing">Writing</span></Link>
         <Link href="/#contact"><span className="roll" data-text="Contact">Contact</span></Link>
       </nav>
-      <a className="nav-cv" href={site.cv} download data-magnetic>Download CV</a>
+      <div className="nav-end">
+        <a className="nav-cv" href={site.cv} download data-magnetic>Download CV</a>
+        <SiteControls themeLabel="Switch light and dark theme" langText="العربية" langLabel="Read the portfolio in Arabic" langHref="/ar" langCode="ar" />
+      </div>
     </header>
   );
 }

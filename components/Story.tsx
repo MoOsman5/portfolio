@@ -2,46 +2,17 @@
 
 import { useEffect, useRef, useState } from "react";
 
-type Step = { time: string; place: string; title: string; body: string; log: string[]; station: number };
+type StepText = { time: string; place: string; title: string; body: string };
+export type StoryText = { title: string; sub: string; coda: string; logLabel: string; stations: string[]; steps: StepText[] };
 
 // A simplified walk through one shipment. Each step is something the platform actually does.
-const steps: Step[] = [
-  {
-    time: "09:12", place: "Alexandria", station: 0,
-    title: "A customer books a shipment.",
-    body: "The request comes in through Nginx and lands on the NestJS API, where it is validated before anything is written.",
-    log: ["POST /shipments", "validate CreateShipmentDto", "201 Created"],
-  },
-  {
-    time: "09:12", place: "Alexandria", station: 0,
-    title: "It is written to this month's partition.",
-    body: "The shipments table is partitioned by date, so the write touches one small partition and queries stay flat no matter how big the history gets.",
-    log: ["INSERT INTO shipments", "→ partition shipments_2026_10"],
-  },
-  {
-    time: "09:13", place: "Alexandria", station: 0,
-    title: "The customer gets a WhatsApp message.",
-    body: "The API doesn't wait for it. A job goes onto a Bull queue and a dedicated worker sends the notification in the background.",
-    log: ["queue.add('notifications')", "worker: whatsapp.sent"],
-  },
-  {
-    time: "14:40", place: "Cairo hub", station: 1,
-    title: "It is scanned at the Cairo hub.",
-    body: "The scan becomes a tracking event. Redis holds the latest status, so the public tracking page and partner APIs answer without touching the database.",
-    log: ["event: shipment.scanned", "SET cache tracking:latest", "GET /track (public API)"],
-  },
-  {
-    time: "Next day, 11:05", place: "Aswan", station: 3,
-    title: "Delivered in Aswan, over a thousand kilometres south.",
-    body: "The final status flows the same way: one event, one queue, one cache update, and the customer and the partner both know within seconds.",
-    log: ["event: shipment.delivered", "worker: whatsapp.sent"],
-  },
-  {
-    time: "18:00", place: "Head office", station: 3,
-    title: "It shows up in tonight's report.",
-    body: "Reporting reads go through PgBouncer to a read replica, so the people running the business never slow down the people moving the boxes.",
-    log: ["PgBouncer → replica-1", "SELECT … daily_report"],
-  },
+const logs: string[][] = [
+  ["POST /shipments", "validate CreateShipmentDto", "201 Created"],
+  ["INSERT INTO shipments", "→ partition shipments_2026_10"],
+  ["queue.add('notifications')", "worker: whatsapp.sent"],
+  ["event: shipment.scanned", "SET cache tracking:latest", "GET /track (public API)"],
+  ["event: shipment.delivered", "worker: whatsapp.sent"],
+  ["PgBouncer → replica-1", "SELECT … daily_report"],
 ];
 
 // Route stations on the little map (viewBox 0 0 320 520): Alexandria, Cairo, Asyut, Aswan.
@@ -55,7 +26,8 @@ const ROUTE = "M92 52 C 118 78, 132 98, 150 118 S 150 220, 168 300 S 212 410, 23
 // Which station the parcel is at during each step; it travels in the last part of a step.
 const atStation = [0, 0, 0, 1, 3, 3];
 
-export default function Story() {
+export default function Story({ t }: { t: StoryText }) {
+  const steps = t.steps.map((st, i) => ({ ...st, log: logs[i] }));
   const section = useRef<HTMLElement>(null);
   const routeRef = useRef<SVGPathElement>(null);
   const [p, setP] = useState(0);
@@ -107,8 +79,8 @@ export default function Story() {
     <section ref={section} className="story" id="story" aria-labelledby="story-title" style={{ ["--steps" as string]: n }}>
       <div className="story-pin">
         <div className="story-head">
-          <h2 id="story-title" className="h2" data-reveal="mask">Follow one shipment.</h2>
-          <p className="story-sub">A simplified day in the platform I built, one package at a time.</p>
+          <h2 id="story-title" className="h2" data-reveal="mask">{t.title}</h2>
+          <p className="story-sub">{t.sub}</p>
         </div>
 
         <div className="story-grid">
@@ -118,13 +90,13 @@ export default function Story() {
                 <p className="story-when"><span>{s.time}</span><span>{s.place}</span></p>
                 <h3 className="story-title">{s.title}</h3>
                 <p className="story-body">{s.body}</p>
-                <pre className="story-log" aria-label="What the system logs">{s.log.map((l, k) => <span key={k} style={{ ["--k" as string]: k }}>{l}</span>)}</pre>
+                <pre className="story-log" aria-label={t.logLabel} dir="ltr">{s.log.map((l, k) => <span key={k} style={{ ["--k" as string]: k }}>{l}</span>)}</pre>
               </li>
             ))}
           </ol>
 
           <div className="story-map" aria-hidden="true">
-            <svg viewBox="0 0 320 520">
+            <svg viewBox="0 0 320 520" style={{ direction: "ltr" }}>
               <defs>
                 <radialGradient id="pkGlow"><stop offset="0" stopColor="#E8D4A8" stopOpacity="0.9" /><stop offset="1" stopColor="#E8D4A8" stopOpacity="0" /></radialGradient>
               </defs>
@@ -135,7 +107,7 @@ export default function Story() {
                 <g key={s.name} className={`story-station ${reached(i) ? "on" : ""}`}>
                   <circle cx={s.x} cy={s.y} r="5" />
                   <circle cx={s.x} cy={s.y} r="12" className="story-station-ring" />
-                  <text x={s.x + (i === 0 ? -14 : 18)} y={s.y + 4} textAnchor={i === 0 ? "end" : "start"}>{s.name}</text>
+                  <text x={s.x + (i === 0 ? -14 : 18)} y={s.y + 4} textAnchor={i === 0 ? "end" : "start"}>{t.stations[i]}</text>
                 </g>
               ))}
               <g transform={`translate(${point.x} ${point.y})`} className="story-parcel">
@@ -143,12 +115,12 @@ export default function Story() {
                 <rect x="-7" y="-7" width="14" height="14" rx="2" transform={`rotate(${routeT * 360})`} />
               </g>
             </svg>
-            <p className="story-count"><span>{String(active + 1).padStart(2, "0")}</span> / {String(n).padStart(2, "0")}</p>
+            <p className="story-count" dir="ltr"><span>{String(active + 1).padStart(2, "0")}</span> / {String(n).padStart(2, "0")}</p>
           </div>
         </div>
 
         <div className="story-bar"><span style={{ transform: `scaleX(${p})` }} /></div>
-        <p className={`story-coda ${p > 0.96 ? "on" : ""}`}>Now do that twenty million times a year.</p>
+        <p className={`story-coda ${p > 0.96 ? "on" : ""}`}>{t.coda}</p>
       </div>
     </section>
   );

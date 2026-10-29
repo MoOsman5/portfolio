@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 // 20,000,000 shipments a year, spread evenly.
 const PER_SECOND = 20_000_000 / (365 * 24 * 3600);
 
-export default function ShipmentCounter() {
+export default function ShipmentCounter({ label, locale = "en-US" }: { label: string; locale?: string }) {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
@@ -18,9 +18,9 @@ export default function ShipmentCounter() {
 
   return (
     <p className="counter">
-      <span className="counter-n">{count.toLocaleString("en-US")}</span>
+      <span className="counter-n">{count.toLocaleString(locale)}</span>
       <span className="counter-l">
-        shipments the platform I built would have moved since you opened this page
+        {label}
       </span>
     </p>
   );

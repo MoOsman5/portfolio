@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { markPolygons, O_PATH } from "./Logo";
 
-const LOGS = [
+const LOGS_EN = [
   "Booting the platform",
   "Warming the Redis cache",
   "Opening this month's partition",
@@ -26,7 +26,8 @@ declare global {
  * Each slab of the mark fills as the work completes, then a curtain opens on the hero.
  * Adds html.is-ready when it leaves; the hero entrance keys off that.
  */
-export default function Preloader() {
+export default function Preloader({ logs = LOGS_EN }: { logs?: string[] }) {
+  const LOGS = logs;
   const [pct, setPct] = useState(0);
   const [phase, setPhase] = useState<"load" | "out" | "done">("load");
   const raf = useRef(0);
