@@ -3,15 +3,31 @@
   "redirects": [
     {
       "source": "/:path*",
-      "has": [{ "type": "host", "value": "mohamed-osman-portfolio.vercel.app" }],
+      "has": [
+        {
+          "type": "host",
+          "value": "mohamed-osman-portfolio.vercel.app"
+        }
+      ],
       "destination": "https://mohamed-osman.com/:path*",
       "permanent": true
     },
     {
       "source": "/:path*",
-      "has": [{ "type": "host", "value": "www.mohamed-osman.com" }],
+      "has": [
+        {
+          "type": "host",
+          "value": "www.mohamed-osman.com"
+        }
+      ],
       "destination": "https://mohamed-osman.com/:path*",
       "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/googleace4da528c7edb70.html",
+      "destination": "/googleace4da528c7edb70"
     }
   ]
 }
