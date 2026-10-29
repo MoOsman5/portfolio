@@ -5,6 +5,7 @@ import "@fontsource/bodoni-moda/400-italic.css";
 import "@fontsource/hanken-grotesk/400.css";
 import "@fontsource/hanken-grotesk/500.css";
 import "@fontsource/hanken-grotesk/600.css";
+import "@fontsource/amiri/700.css";
 import "./globals.css";
 import "./motion.css";
 import { site } from "@/lib/site";
@@ -30,8 +31,11 @@ export const metadata: Metadata = {
     "TypeScript",
     "Redis",
     "Bull queues",
+    "Software architect Egypt",
     "Giza",
     "Cairo",
+    "محمد عثمان",
+    "مهندس باك اند",
   ],
   alternates: { canonical: "/" },
   openGraph: {
@@ -64,6 +68,9 @@ const jsonLd = {
       "@type": "Person",
       "@id": `${site.url}/#person`,
       name: site.name,
+      alternateName: ["محمد عثمان", "MoOsman5"],
+      givenName: "Mohamed",
+      familyName: "Osman",
       url: site.url,
       image: `${site.url}/images/mohamed.webp`,
       jobTitle: site.role,
@@ -73,6 +80,7 @@ const jsonLd = {
       alumniOf: { "@type": "CollegeOrUniversity", name: "Cairo University" },
       knowsAbout: ["Backend engineering", "NestJS", "Node.js", "TypeScript", "PostgreSQL", "Redis", "Distributed systems", "Logistics software"],
       knowsLanguage: ["ar", "en"],
+      hasOccupation: { "@type": "Occupation", name: "Senior Backend Engineer", occupationLocation: { "@type": "Country", name: "Egypt" }, skills: "NestJS, Node.js, TypeScript, PostgreSQL, Redis, system design" },
       sameAs: [site.linkedin, site.github, site.leetcode],
     },
     {
@@ -95,6 +103,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             __html: `document.documentElement.classList.add("js")`,
           }}
         />
+        <link rel="me" href={site.linkedin} />
+        <link rel="me" href={site.github} />
+        <link rel="author" href={site.url} />
       </head>
       <body>
         <a className="skip" href="#main">Skip to content</a>

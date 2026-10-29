@@ -9,14 +9,31 @@ import Story from "@/components/Story";
 import { Chars, Words } from "@/components/Split";
 import SlabM from "@/components/SlabM";
 import Cosmos from "@/components/Cosmos";
+import Link from "next/link";
+import { articles } from "@/lib/articles";
 import { decisions, experience, visibleProjects as projects, site, stack } from "@/lib/site";
 
 const marqueeA = ["NestJS", "PostgreSQL", "Redis", "Bull", "TypeScript", "Node.js", "PgBouncer", "Docker", "AWS", "GraphQL"];
 const marqueeB = ["Partitioning", "Read replicas", "Zero-downtime migrations", "Queues", "Caching", "Multi-tenant SaaS", "OpenTelemetry", "Code review"];
 
+const profileLd = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  "@id": `${site.url}/#profile`,
+  url: site.url,
+  name: `${site.name} — ${site.role}`,
+  dateCreated: "2026-09-01",
+  dateModified: "2026-10-29",
+  inLanguage: "en",
+  isPartOf: { "@id": `${site.url}/#website` },
+  mainEntity: { "@id": `${site.url}/#person` },
+  hasPart: articles.map((a) => ({ "@type": "BlogPosting", headline: a.title, url: `${site.url}/writing/${a.slug}`, datePublished: a.date })),
+};
+
 export default function Home() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(profileLd) }} />
       <Preloader />
       <Cosmos />
       <Motion />
@@ -26,6 +43,7 @@ export default function Home() {
           <a href="#work"><span className="roll" data-text="Work">Work</span></a>
           <a href="#experience"><span className="roll" data-text="Experience">Experience</span></a>
           <a href="#projects"><span className="roll" data-text="Projects">Projects</span></a>
+          <Link href="/writing"><span className="roll" data-text="Writing">Writing</span></Link>
           <a href="#contact"><span className="roll" data-text="Contact">Contact</span></a>
         </nav>
         <a className="nav-cv" href={site.cv} download data-magnetic>Download CV</a>
@@ -174,6 +192,25 @@ export default function Home() {
               ))}
             </dl>
           </div>
+        </section>
+
+        <section className="section writing" id="writing" aria-labelledby="writing-title">
+          <div className="section-head">
+            <h2 id="writing-title" className="h2" data-reveal="mask"><Words text="Notes from production." /></h2>
+            <p className="intro" data-reveal="up">Short pieces on PostgreSQL, NestJS and running a platform at scale, in English and Arabic.</p>
+          </div>
+          <ol className="writing-list">
+            {articles.map((a) => (
+              <li key={a.slug} data-reveal="up" lang={a.lang} dir={a.lang === "ar" ? "rtl" : "ltr"}>
+                <Link href={`/writing/${a.slug}`} data-magnetic>
+                  <time dateTime={a.date}>{a.date.slice(0, 7).replace("-", " · ")}</time>
+                  <span className="writing-title">{a.title}</span>
+                  <span className="writing-arrow" aria-hidden="true">→</span>
+                </Link>
+              </li>
+            ))}
+          </ol>
+          <p data-reveal="up"><Link href="/writing" className="link">All writing</Link></p>
         </section>
 
         <section className="contact" id="contact" aria-labelledby="contact-title">

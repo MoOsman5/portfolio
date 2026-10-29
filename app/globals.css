@@ -204,3 +204,15 @@ a { color: inherit; }
 .footer-mark { display: inline-flex; align-items: center; gap: 10px; margin: 0; }
 .footer-mark svg { color: #5c5852; }
 .mark svg { color: var(--ivory); }
+
+/* Writing teaser */
+.writing-list { list-style: none; margin: 0 0 32px; padding: 0; border-top: 1px solid var(--line); }
+.writing-list li { border-bottom: 1px solid var(--line); }
+.writing-list a { display: grid; grid-template-columns: 110px 1fr auto; gap: 24px; align-items: baseline; padding: 26px 0; color: var(--ivory); text-decoration: none; transition: padding 0.5s cubic-bezier(0.16,1,0.3,1), color 0.3s; }
+.writing-list a:hover { padding-inline-start: 14px; color: var(--gold-soft); }
+.writing-list time { font-size: 14px; color: var(--gold); direction: ltr; }
+.writing-title { font-family: var(--serif); font-size: clamp(21px, 2.4vw, 28px); line-height: 1.3; }
+.writing-list li[lang="ar"] .writing-title { font-family: "Amiri", serif; font-weight: 700; }
+.writing-arrow { color: var(--ash); }
+.writing-list li[dir="rtl"] .writing-arrow { transform: scaleX(-1); }
+@media (max-width: 720px) { .writing-list a { grid-template-columns: 1fr auto; } .writing-list time { grid-column: 1 / -1; } }
