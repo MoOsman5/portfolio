@@ -1,11 +1,16 @@
-import "@fontsource-variable/archivo/wdth.css";
-import "@fontsource/ibm-plex-sans/400.css";
-import "@fontsource/ibm-plex-sans/500.css";
-import "@fontsource/ibm-plex-sans/600.css";
+import "@fontsource/bodoni-moda/400.css";
+import "@fontsource/bodoni-moda/500.css";
+import "@fontsource/bodoni-moda/400-italic.css";
+import "@fontsource/hanken-grotesk/400.css";
+import "@fontsource/hanken-grotesk/500.css";
+import "@fontsource/hanken-grotesk/600.css";
+import "@fontsource/amiri/400.css";
+import "@fontsource/amiri/700.css";
 import "@fontsource/ibm-plex-sans-arabic/400.css";
 import "@fontsource/ibm-plex-sans-arabic/500.css";
-import "@fontsource/ibm-plex-sans-arabic/700.css";
 import "../app/globals.css";
+import "../app/motion.css";
+import "../app/rtl.css";
 import { site } from "@/lib/site";
 import type { Lang } from "@/lib/content";
 
@@ -42,13 +47,13 @@ const jsonLd = {
   ],
 };
 
-// Runs before paint: applies the saved theme, or the system preference on a first visit (light is the default).
-const boot = `(function(){var d=document.documentElement;try{var t=localStorage.getItem("theme");if(!t&&window.matchMedia("(prefers-color-scheme: dark)").matches)t="dark";if(t==="dark"){d.dataset.theme="dark";var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content","#0a1420");}}catch(e){}})();`;
+// Runs before paint: marks JS as available and applies a saved light theme (dark is the default).
+const boot = `(function(){var d=document.documentElement;d.classList.add("js");try{if(localStorage.getItem("theme")==="light"){d.dataset.theme="light";var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content","#f4f0e8");}}catch(e){}})();`;
 
 export default function Document({ lang, children }: { lang: Lang; children: React.ReactNode }) {
   const ar = lang === "ar";
   return (
-    <html lang={lang} dir={ar ? "rtl" : "ltr"} data-theme="light" suppressHydrationWarning>
+    <html lang={lang} dir={ar ? "rtl" : "ltr"} data-theme="dark" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: boot }} />
         <link rel="me" href={site.linkedin} />

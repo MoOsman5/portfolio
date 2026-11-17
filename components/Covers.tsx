@@ -3,41 +3,10 @@ import type { Cover } from "@/lib/site";
 /**
  * Drawn covers for projects that have no public screenshot yet. Each one shows how the product
  * works rather than imitating its UI. Replace with a real image by setting `image` in lib/site.ts.
+ * Drawn light-on-dark in the site's black and gold; they stay dark in the light theme, like a screen.
  */
-const ink = "#EAF0F6", dim = "#8FA3B8", line = "#2B4059", sun = "#FFC531", sky = "#8DBBEA", panel = "#13263A";
-const font = "'IBM Plex Sans', system-ui, sans-serif";
-
-function Awn() {
-  const steps = ["Lead", "Quotation", "Contract", "Invoice", "Renewal"];
-  return (
-    <svg viewBox="0 0 800 450" aria-hidden="true" fontFamily={font}>
-      <text x="48" y="74" fill={dim} fontSize="24">Client lifecycle</text>
-      <path d="M96 150 H704" stroke={line} strokeWidth="4" />
-      <path d="M96 150 H552" stroke={sun} strokeWidth="4" />
-      {steps.map((s, i) => {
-        const x = 96 + i * 152, done = i <= 3;
-        return (
-          <g key={s}>
-            <circle cx={x} cy="150" r="15" fill={done ? sun : panel} stroke={done ? sun : line} strokeWidth="4" />
-            <text x={x} y="202" textAnchor="middle" fill={done ? ink : dim} fontSize="23" fontWeight={i === 3 ? 600 : 400}>{s}</text>
-          </g>
-        );
-      })}
-      <rect x="48" y="246" width="704" height="160" rx="12" fill={panel} stroke={line} />
-      <text x="76" y="290" fill={dim} fontSize="21">Who can see this contract</text>
-      {[["Sales", "own"], ["Account Manager", "branch"], ["Finance", "all"]].map(([r, sc], i) => {
-        const x = [76, 250, 560][i], w = sc.length * 13 + 30;
-        return (
-          <g key={r} transform={`translate(${x} 306)`}>
-            <text y="26" fill={ink} fontSize="23">{r}</text>
-            <rect x="0" y="42" width={w} height="36" rx="18" fill="none" stroke={i === 2 ? sun : sky} strokeWidth="1.5" />
-            <text x={w / 2} y="67" textAnchor="middle" fill={i === 2 ? sun : sky} fontSize="20">{sc}</text>
-          </g>
-        );
-      })}
-    </svg>
-  );
-}
+const ink = "#ede8df", dim = "#8b867d", line = "#3a3733", sun = "#c8a96a", sky = "#e8d4a8", panel = "#0b0a09";
+const font = "'Hanken Grotesk', system-ui, sans-serif";
 
 function Pop() {
   const cols = 7, rows = 3;
@@ -54,34 +23,6 @@ function Pop() {
       <path d="M230 372 H540" stroke={sun} strokeWidth="4" />
       <circle cx="540" cy="372" r="11" fill={sun} />
       <text x="540" y="414" textAnchor="middle" fill={sun} fontSize="21">+350 ms, all phones fire</text>
-    </svg>
-  );
-}
-
-function Mahsoom() {
-  const rows: [string, string, string][] = [["Restock", "+12", "12"], ["Sale", "−11", "1"]];
-  return (
-    <svg viewBox="0 0 800 450" aria-hidden="true" fontFamily={font}>
-      <text x="48" y="70" fill={dim} fontSize="24">Stock ledger, append-only</text>
-      {rows.map(([a, b, c], i) => (
-        <g key={i} transform={`translate(48 ${94 + i * 66})`}>
-          <rect width="704" height="54" rx="8" fill={panel} stroke={line} />
-          <text x="24" y="35" fill={ink} fontSize="23">{a}</text>
-          <text x="450" y="35" textAnchor="end" fill={b.startsWith("+") ? sky : ink} fontSize="23">{b}</text>
-          <text x="680" y="35" textAnchor="end" fill={dim} fontSize="22">left: {c}</text>
-        </g>
-      ))}
-      <text x="48" y="272" fill={dim} fontSize="24">Two buyers, one unit left</text>
-      <g transform="translate(48 294)">
-        <rect width="340" height="112" rx="12" fill="none" stroke={sun} strokeWidth="2.5" />
-        <text x="24" y="46" fill={ink} fontSize="25" fontWeight="600">Buyer A</text>
-        <text x="24" y="84" fill={sun} fontSize="22">Order confirmed</text>
-      </g>
-      <g transform="translate(412 294)">
-        <rect width="340" height="112" rx="12" fill="none" stroke={line} strokeWidth="2.5" />
-        <text x="24" y="46" fill={ink} fontSize="25" fontWeight="600">Buyer B</text>
-        <text x="24" y="84" fill={dim} fontSize="22">Rejected, out of stock</text>
-      </g>
     </svg>
   );
 }
@@ -111,7 +52,7 @@ function Masroof() {
 export default function CoverArt({ kind }: { kind: Cover }) {
   return (
     <div className="cover" dir="ltr">
-      {kind === "awn" ? <Awn /> : kind === "pop" ? <Pop /> : kind === "mahsoom" ? <Mahsoom /> : <Masroof />}
+      {kind === "pop" ? <Pop /> : <Masroof />}
     </div>
   );
 }

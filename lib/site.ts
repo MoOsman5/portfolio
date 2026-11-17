@@ -132,19 +132,21 @@ export const decisions = [
   },
 ];
 
-export type Cover = "awn" | "pop" | "mahsoom" | "masroof";
+export type Cover = "pop" | "masroof";
 export type Project = {
   name: string; href?: string; image?: string; width?: number; height?: number; cover?: Cover;
   summary: string; stack: string[]; status?: string;
 };
 
-// Work delivered at Alpha Tech. Swap `cover` for `image` when real screenshots are added to public/images.
+// Work delivered at Alpha Tech. A project shows `image` when it has one, otherwise a drawn `cover`.
 export const featured: (Project & { tagline: string; facts: string[] })[] = [
   {
     name: "AWN",
     tagline: "A business-services platform for a Saudi company.",
     href: "https://landing-awn.alphaa-tech.com/",
-    cover: "awn",
+    image: "/images/awn.webp",
+    width: 1400,
+    height: 788,
     summary:
       "One system for the whole client lifecycle: website lead, quotation, contract, invoice, subscription, government-service requests and renewal reminders. Arabic and English, with a client self-service portal.",
     facts: [
@@ -194,7 +196,10 @@ export const projects: Project[] = [
   },
   {
     name: "Mahsoom",
-    cover: "mahsoom",
+    href: "https://mahsoom.com/",
+    image: "/images/mahsoom.webp",
+    width: 1400,
+    height: 796,
     status: "In progress",
     summary:
       "A multi-tenant SaaS for small merchants, built with a partner. Stock moves through an append-only ledger, and a concurrency test proves that when two buyers race for the last unit, exactly one wins.",
