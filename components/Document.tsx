@@ -31,9 +31,9 @@ const jsonLd = {
       telephone: site.phone.replace(/\s/g, ""),
       address: { "@type": "PostalAddress", addressLocality: "Giza", addressCountry: "EG" },
       alumniOf: { "@type": "CollegeOrUniversity", name: "Cairo University" },
-      knowsAbout: ["Backend engineering", "NestJS", "Node.js", "TypeScript", "PostgreSQL", "Redis", "Distributed systems", "Logistics software"],
+      knowsAbout: ["Backend engineering", "Full stack development", "React", "Next.js", "NestJS", "Node.js", "TypeScript", "PostgreSQL", "Redis", "Distributed systems", "Logistics software"],
       knowsLanguage: ["ar", "en"],
-      hasOccupation: { "@type": "Occupation", name: "Senior Backend Engineer", occupationLocation: { "@type": "Country", name: "Egypt" }, skills: "NestJS, Node.js, TypeScript, PostgreSQL, Redis, system design" },
+      hasOccupation: { "@type": "Occupation", name: "Senior Software Engineer", occupationLocation: { "@type": "Country", name: "Egypt" }, skills: "NestJS, Node.js, TypeScript, PostgreSQL, Redis, system design" },
       sameAs: [site.linkedin, site.github, site.leetcode],
     },
     {

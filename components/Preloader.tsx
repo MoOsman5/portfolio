@@ -4,13 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import { markPolygons, O_PATH } from "./Logo";
 
 const LOGS_EN = [
-  "Booting the platform",
-  "Warming the Redis cache",
-  "Opening this month's partition",
-  "Routing reads to replicas",
-  "Draining the Bull queue",
-  "Dispatching to 23 cities",
-  "All shipments on the road",
+  "Reading the requirements",
+  "Designing the schema",
+  "Writing the tests first",
+  "Reviewing every diff",
+  "Migrating with zero downtime",
+  "Deploying",
+  "Ready to work",
 ];
 
 const SLABS = markPolygons(9);

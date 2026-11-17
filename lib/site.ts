@@ -1,7 +1,7 @@
 export const site = {
   url: "https://mohamed-osman.com",
   name: "Mohamed Osman",
-  role: "Senior Backend Engineer",
+  role: "Senior Software Engineer",
   location: "Giza, Egypt",
   email: "imohamedosmann@gmail.com",
   phone: "+20 10 9590 2696",
@@ -12,10 +12,26 @@ export const site = {
   leetcode: "https://leetcode.com/MoOsman_5/",
   cv: "/Mohamed-Osman-CV.pdf",
   description:
-    "Mohamed Osman is a senior backend engineer in Giza, Egypt. He designed and built ABS Courier's logistics platform from scratch, now handling 20M+ shipments a year for 50,000+ users, with NestJS, PostgreSQL, Bull queues and Redis.",
+    "Mohamed Osman is a senior software engineer and tech lead in Giza, Egypt: backend-first, with full stack delivery. He designs systems that hold up under real load, leads the teams that build them, and ships whole products with NestJS, PostgreSQL, Redis and React. Built ABS Courier's logistics platform for 20M+ shipments a year.",
 };
 
 export const experience = [
+  {
+    company: "Alpha Tech",
+    place: "Giza",
+    roles: [
+      {
+        title: "Tech Lead (part-time)",
+        from: "Nov 2026",
+        to: "Present",
+        points: [
+          "Lead a team of seven and the delivery of two products. I own architecture, planning, code review and deployment, with Claude Code implementing and testing under that review.",
+          "Delivered AWN, a business-services platform for a Saudi company, in two weeks: NestJS API with about 70 modules, React 19 admin dashboard and marketing website.",
+          "Built POP, a real-time party app: a NestJS, Socket.IO and Redis backend that keeps every phone in the room on the server's clock, with a Flutter client.",
+        ],
+      },
+    ],
+  },
   {
     company: "ABS Courier",
     place: "Cairo",
@@ -35,7 +51,7 @@ export const experience = [
         from: "Nov 2024",
         to: "Aug 2026",
         points: [
-          "Designed and built the company's logistics platform from scratch, replacing a purchased legacy system. It handles 20M+ shipments a year for 50,000+ users: 1,000+ staff, 5,000+ business customers, and the consignees tracking their shipments.",
+          "Designed and built the company's logistics platform from scratch, replacing a purchased legacy system. It handles 20M+ shipments a year for 1,000+ staff and 20,000+ merchant and partner accounts, plus a public tracking site.",
           "Gathered requirements directly from operations, branch and fleet management, and turned them into system design.",
           "Led a team of five backend engineers: review standards, onboarding and mentoring.",
         ],
@@ -116,10 +132,48 @@ export const decisions = [
   },
 ];
 
-export const projects: {
-  name: string; href: string; image: string; width: number; height: number;
-  summary: string; stack: string[]; status?: string; unreleased?: boolean;
-}[] = [
+export type Cover = "pop" | "masroof";
+export type Project = {
+  name: string; href?: string; image?: string; width?: number; height?: number; cover?: Cover;
+  summary: string; stack: string[]; status?: string;
+};
+
+// Work delivered at Alpha Tech. A project shows `image` when it has one, otherwise a drawn `cover`.
+export const featured: (Project & { tagline: string; facts: string[] })[] = [
+  {
+    name: "AWN",
+    tagline: "A business-services platform for a Saudi company.",
+    href: "https://landing-awn.alphaa-tech.com/",
+    image: "/images/awn.webp",
+    width: 1400,
+    height: 788,
+    summary:
+      "One system for the whole client lifecycle: website lead, quotation, contract, invoice, subscription, government-service requests and renewal reminders. Arabic and English, with a client self-service portal.",
+    facts: [
+      "API, admin dashboard and marketing website delivered in two weeks.",
+      "About 70 backend modules and 8 built-in roles, with data scope (all, branch or own) enforced at the query level.",
+      "OIDC SSO with PKCE, and rotating refresh tokens with reuse detection.",
+      "Checked by a 40,936-case API permission matrix and Playwright end-to-end tests.",
+    ],
+    stack: ["NestJS", "TypeORM", "MySQL", "React 19", "Tailwind 4", "Three.js"],
+  },
+  {
+    name: "POP",
+    tagline: "A party app that turns every phone into part of the show.",
+    cover: "pop",
+    summary:
+      "The DJ controls the screens, flashes and sounds of every phone in the room at the same instant, and can play one song in sync on all of them. Phones follow the server's clock, not their own.",
+    facts: [
+      "Each command is scheduled 350 ms ahead on server time, so every phone fires together.",
+      "Shared songs: each phone checks its position and corrects itself when it drifts more than 140 ms.",
+      "Voice rooms on LiveKit, and Socket.IO with a Redis adapter so more servers can join the same room.",
+      "221 backend tests run before every deploy.",
+    ],
+    stack: ["NestJS", "Socket.IO", "Redis", "MySQL", "LiveKit", "Flutter"],
+  },
+];
+
+export const projects: Project[] = [
   {
     name: "AKM E-Commerce",
     href: "https://akm-ecommerce-pnyk.vercel.app/",
@@ -140,16 +194,34 @@ export const projects: {
       "A bilingual store for automotive control systems and parts, mobile-first, with light and dark themes and full right-to-left Arabic support.",
     stack: ["Next.js", "TypeScript", "Tailwind CSS", "shadcn/ui"],
   },
+  {
+    name: "Mahsoom",
+    href: "https://mahsoom.com/",
+    image: "/images/mahsoom.webp",
+    width: 1400,
+    height: 796,
+    status: "In progress",
+    summary:
+      "A multi-tenant SaaS for small merchants, built with a partner. Stock moves through an append-only ledger, and a concurrency test proves that when two buyers race for the last unit, exactly one wins.",
+    stack: ["NestJS", "Drizzle", "PostgreSQL RLS", "BullMQ", "Next.js", "Expo"],
+  },
+  {
+    name: "Masroof",
+    href: "https://github.com/MoOsman5/masroof",
+    cover: "masroof",
+    status: "In progress",
+    summary:
+      "A multi-tenant expense API in ASP.NET Core and MongoDB, built to carry my NestJS experience over to .NET. Next: JWT auth with tenant context and LLM receipt extraction.",
+    stack: ["ASP.NET Core", ".NET 10", "MongoDB", "Docker"],
+  },
 ];
 
 export const stack = [
   { group: "Backend", items: ["TypeScript", "Node.js", "NestJS", "Express", "REST", "GraphQL", "Event-driven design", "Multi-tenant architecture"] },
   { group: "Data", items: ["PostgreSQL", "Partitioning", "Replication", "Query tuning", "PgBouncer", "Redis", "Bull", "MySQL", "MongoDB"] },
   { group: "Infrastructure", items: ["Docker", "AWS (EC2, S3, RDS, Aurora)", "Nginx", "CI/CD", "OpenTelemetry", "Prometheus", "Loki"] },
-  { group: "Frontend", items: ["React", "Next.js", "React Native"] },
+  { group: "Frontend", items: ["React", "Next.js", "React Native", "Tailwind CSS", "TanStack Query", "Zustand"] },
+  { group: "AI tooling", items: ["Claude Code", "Cursor", "GitHub Copilot", "Windsurf"] },
   { group: "Practice", items: ["Architecture Decision Records", "Zero-downtime migrations", "Code review", "Mentoring"] },
 ];
 
-// Unreleased projects can be flagged with `unreleased: true` and shown by setting SHOW_UNRELEASED.
-export const SHOW_UNRELEASED = false;
-export const visibleProjects = projects.filter((p) => SHOW_UNRELEASED || !p.unreleased);

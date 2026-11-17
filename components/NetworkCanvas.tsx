@@ -2,45 +2,10 @@
 
 import { useEffect, useRef } from "react";
 
-type City = { name: string; lon: number; lat: number; hub?: boolean; label?: boolean };
+import { nodes, routes, nodeIndex as idx } from "@/lib/system";
 
-const cities: City[] = [
-  { name: "Cairo", lon: 31.24, lat: 30.04, hub: true, label: true },
-  { name: "Giza", lon: 31.0, lat: 29.9 },
-  { name: "Alexandria", lon: 29.92, lat: 31.2, label: true },
-  { name: "Marsa Matruh", lon: 27.24, lat: 31.35 },
-  { name: "Damanhur", lon: 30.47, lat: 31.03 },
-  { name: "Kafr El Sheikh", lon: 30.94, lat: 31.11 },
-  { name: "Tanta", lon: 31.0, lat: 30.79 },
-  { name: "Mansoura", lon: 31.38, lat: 31.04 },
-  { name: "Damietta", lon: 31.81, lat: 31.42 },
-  { name: "Port Said", lon: 32.3, lat: 31.26, label: true },
-  { name: "Ismailia", lon: 32.27, lat: 30.6 },
-  { name: "Zagazig", lon: 31.5, lat: 30.59 },
-  { name: "Suez", lon: 32.55, lat: 29.97 },
-  { name: "Faiyum", lon: 30.84, lat: 29.31 },
-  { name: "Beni Suef", lon: 31.1, lat: 29.07 },
-  { name: "Minya", lon: 30.75, lat: 28.1 },
-  { name: "Asyut", lon: 31.18, lat: 27.18 },
-  { name: "Sohag", lon: 31.69, lat: 26.56 },
-  { name: "Qena", lon: 32.72, lat: 26.16 },
-  { name: "Luxor", lon: 32.64, lat: 25.69 },
-  { name: "Aswan", lon: 32.9, lat: 24.09, label: true },
-  { name: "Hurghada", lon: 33.81, lat: 27.26, label: true },
-  { name: "Sharm El Sheikh", lon: 34.33, lat: 27.92 },
-];
-
-const idx = (n: string) => cities.findIndex((c) => c.name === n);
-
-// Road-like routes: the Nile valley chain, the Delta, the canal and the Red Sea coast.
-const routes: [string, string][] = [
-  ["Aswan", "Luxor"], ["Luxor", "Qena"], ["Qena", "Sohag"], ["Sohag", "Asyut"], ["Asyut", "Minya"],
-  ["Minya", "Beni Suef"], ["Beni Suef", "Giza"], ["Faiyum", "Giza"], ["Giza", "Cairo"],
-  ["Cairo", "Tanta"], ["Tanta", "Damanhur"], ["Damanhur", "Alexandria"], ["Alexandria", "Marsa Matruh"],
-  ["Tanta", "Kafr El Sheikh"], ["Cairo", "Zagazig"], ["Zagazig", "Mansoura"], ["Mansoura", "Damietta"],
-  ["Zagazig", "Ismailia"], ["Ismailia", "Port Said"], ["Cairo", "Suez"], ["Suez", "Hurghada"],
-  ["Hurghada", "Qena"], ["Suez", "Sharm El Sheikh"], ["Cairo", "Alexandria"], ["Cairo", "Ismailia"],
-];
+// The same system as the 3D scene, flattened: plane coordinates mapped into the canvas box below.
+const cities = nodes.map((n) => ({ name: n.name, lon: 30.75 + n.x * 0.9, lat: 27.75 - n.z, hub: n.hub, label: n.label }));
 
 type Edge = { a: number; b: number; bend: number };
 type Packet = { edge: number; t: number; speed: number; dir: 1 | -1 };

@@ -5,7 +5,7 @@ import { site } from "@/lib/site";
 
 const title = "Writing on PostgreSQL, NestJS and backend architecture";
 const description =
-  "Articles by Mohamed Osman, senior backend engineer, on PostgreSQL performance, read replicas, NestJS, queues and building a logistics platform for 20M+ shipments a year. In English and Arabic.";
+  "Articles by Mohamed Osman, senior software engineer, on PostgreSQL performance, read replicas, NestJS, queues and building a logistics platform for 20M+ shipments a year. In English and Arabic.";
 
 export const metadata: Metadata = {
   title,

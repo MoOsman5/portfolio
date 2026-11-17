@@ -4,19 +4,35 @@ import HeroScene from "@/components/HeroScene";
 import Preloader from "@/components/Preloader";
 import Motion from "@/components/Motion";
 import Logo from "@/components/Logo";
-import ShipmentCounter from "@/components/ShipmentCounter";
 import Architecture from "@/components/Architecture";
 import Story from "@/components/Story";
 import { Chars, Words } from "@/components/Split";
 import SlabM from "@/components/SlabM";
 import Cosmos from "@/components/Cosmos";
+import CoverArt from "@/components/Covers";
 import SiteControls from "@/components/SiteControls";
 import { articles } from "@/lib/articles";
-import { site } from "@/lib/site";
+import { site, type Project } from "@/lib/site";
 import { content, type Lang } from "@/lib/content";
 
 const marqueeA = ["NestJS", "PostgreSQL", "Redis", "Bull", "TypeScript", "Node.js", "PgBouncer", "Docker", "AWS", "GraphQL"];
 const marqueeB = ["Partitioning", "Read replicas", "Zero-downtime migrations", "Queues", "Caching", "Multi-tenant SaaS", "OpenTelemetry", "Code review"];
+
+function Shot({ p, label, alt, cursor }: { p: Project; label: string; alt: string; cursor: string }) {
+  const inner = (
+    <>
+      <span className="project-img" data-parallax={p.image ? "0.06" : undefined}>
+        {p.image
+          ? <Image src={p.image} alt={alt} width={p.width} height={p.height} sizes="(max-width: 900px) 100vw, 80vw" />
+          : p.cover && <CoverArt kind={p.cover} />}
+      </span>
+      <span className="project-glare" aria-hidden="true" />
+    </>
+  );
+  return p.href
+    ? <a href={p.href} target="_blank" rel="noopener" className="project-shot" aria-label={label} data-reveal="clip" data-tilt data-cursor={cursor}>{inner}</a>
+    : <div className="project-shot" data-reveal="clip" data-tilt>{inner}</div>;
+}
 
 export default function HomePage({ lang }: { lang: Lang }) {
   const c = content[lang];
@@ -28,9 +44,9 @@ export default function HomePage({ lang }: { lang: Lang }) {
     "@type": "ProfilePage",
     "@id": `${site.url}${base}/#profile`,
     url: `${site.url}${base || "/"}`,
-    name: ar ? "محمد عثمان — مهندس باك إند أول" : `${site.name} — ${site.role}`,
+    name: ar ? "محمد عثمان — مهندس برمجيات أول" : `${site.name} — ${site.role}`,
     dateCreated: "2026-09-01",
-    dateModified: "2026-10-30",
+    dateModified: "2026-11-17",
     inLanguage: lang,
     isPartOf: { "@id": `${site.url}/#website` },
     mainEntity: { "@id": `${site.url}/#person` },
@@ -47,8 +63,9 @@ export default function HomePage({ lang }: { lang: Lang }) {
         <a href="#top" className="mark" aria-label={c.nav.home} data-magnetic><Logo height={26} title={site.name} /></a>
         <nav aria-label={c.nav.sections}>
           <a href="#work"><span className="roll" data-text={c.nav.work}>{c.nav.work}</span></a>
-          <a href="#experience"><span className="roll" data-text={c.nav.experience}>{c.nav.experience}</span></a>
+          <a href="#now"><span className="roll" data-text={c.nav.now}>{c.nav.now}</span></a>
           <a href="#projects"><span className="roll" data-text={c.nav.projects}>{c.nav.projects}</span></a>
+          <a href="#experience"><span className="roll" data-text={c.nav.experience}>{c.nav.experience}</span></a>
           <Link href="/writing"><span className="roll" data-text={c.nav.writing}>{c.nav.writing}</span></Link>
           <a href="#contact"><span className="roll" data-text={c.nav.contact}>{c.nav.contact}</span></a>
         </nav>
@@ -81,8 +98,10 @@ export default function HomePage({ lang }: { lang: Lang }) {
               <a className="btn" href={site.cv} download data-magnetic><span>{c.hero.cv}</span></a>
             </div>
           </div>
-          <ShipmentCounter label={c.counter} locale={c.numberLocale} />
-          <a href="#work" className="scroll-cue" aria-label={c.hero.scroll}><span /></a>
+          <ul className="counter hero-facts">
+            {c.facts.map((f) => <li key={f.label}><span className="counter-n" dir="ltr">{f.value}</span><span className="counter-l">{f.label}</span></li>)}
+          </ul>
+          <a href="#story" className="scroll-cue" aria-label={c.hero.scroll}><span /></a>
         </section>
 
         <Story t={c.story} />
@@ -95,7 +114,7 @@ export default function HomePage({ lang }: { lang: Lang }) {
 
           <dl className="figures" data-reveal="up">
             <div><dt>{c.work.figures[0]}</dt><dd dir="ltr" data-count="20" data-suffix="M+">20M+</dd></div>
-            <div><dt>{c.work.figures[1]}</dt><dd dir="ltr" data-count="50" data-suffix="K+">50K+</dd></div>
+            <div><dt>{c.work.figures[1]}</dt><dd dir="ltr" data-count="20" data-suffix="K+">20K+</dd></div>
             <div><dt>{c.work.figures[2]}</dt><dd dir="ltr" data-count="3.7" data-decimals="1" data-suffix="×">3.7×</dd></div>
             <div><dt>{c.work.figures[3]}</dt><dd dir="ltr" data-count="5">5</dd></div>
           </dl>
@@ -114,6 +133,52 @@ export default function HomePage({ lang }: { lang: Lang }) {
               </li>
             ))}
           </ul>
+        </section>
+
+        <section className="section" id="now" aria-labelledby="now-title">
+          <div className="section-head">
+            <h2 id="now-title" className="h2" data-reveal="mask"><Words text={c.now.title} /></h2>
+            <p className="intro" data-reveal="up">{c.now.intro}</p>
+          </div>
+          <div className="projects">
+            {c.now.items.map((p) => (
+              <article key={p.name} className="project project-feature">
+                <Shot p={p} label={`${c.projects.open} ${p.name} ${c.projects.inNewTab}`} alt={`${p.name} ${c.projects.homePage}`} cursor={c.projects.visit} />
+                <div className="project-text" data-reveal="up">
+                  <h3 className="feature-name" dir="ltr">{p.name}</h3>
+                  <p className="feature-tagline">{p.tagline}</p>
+                  <p>{p.summary}</p>
+                  <ul className="facts">{p.facts.map((f) => <li key={f}>{f}</li>)}</ul>
+                  <p className="tags" dir="ltr">{p.stack.join(", ")}</p>
+                  {p.href ? <a className="link" href={p.href} target="_blank" rel="noopener">{c.now.visit}</a> : null}
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="section" id="projects" aria-labelledby="proj-title">
+          <div className="section-head">
+            <h2 id="proj-title" className="h2" data-reveal="mask"><Words text={c.projects.title} /></h2>
+            <p className="intro" data-reveal="up">{c.projects.intro}</p>
+          </div>
+          <div className="projects">
+            {c.projects.items.map((p) => {
+              const code = p.href?.includes("github.com");
+              return (
+                <article key={p.name} className="project">
+                  <Shot p={p} label={`${c.projects.open} ${p.name} ${c.projects.inNewTab}`} alt={`${p.name} ${c.projects.homePage}`} cursor={code ? c.projects.code : c.projects.visit} />
+                  <div className="project-text" data-reveal="up">
+                    {p.status ? <p className="status"><span aria-hidden="true" />{p.status}</p> : null}
+                    <h3 className="h3" dir="ltr">{p.name}</h3>
+                    <p>{p.summary}</p>
+                    <p className="tags" dir="ltr">{p.stack.join(", ")}</p>
+                    {p.href ? <a className="link" href={p.href} target="_blank" rel="noopener">{code ? c.projects.code : `${c.projects.visit} ${p.name}`}</a> : null}
+                  </div>
+                </article>
+              );
+            })}
+          </div>
         </section>
 
         <section className="section" id="experience" aria-labelledby="exp-title">
@@ -145,32 +210,6 @@ export default function HomePage({ lang }: { lang: Lang }) {
               </li>
             ))}
           </ol>
-        </section>
-
-        <section className="section" id="projects" aria-labelledby="proj-title">
-          <div className="section-head">
-            <h2 id="proj-title" className="h2" data-reveal="mask"><Words text={c.projects.title} /></h2>
-            <p className="intro" data-reveal="up">{c.projects.intro}</p>
-          </div>
-          <div className="projects">
-            {c.projects.items.map((p) => (
-              <article key={p.name} className="project">
-                <a href={p.href} target="_blank" rel="noopener" className="project-shot" aria-label={`${c.projects.open} ${p.name} ${c.projects.inNewTab}`} data-reveal="clip" data-tilt data-cursor={c.projects.visit}>
-                  <span className="project-img" data-parallax="0.06">
-                    <Image src={p.image} alt={`${p.name} ${c.projects.homePage}`} width={p.width} height={p.height} sizes="(max-width: 900px) 100vw, 80vw" />
-                  </span>
-                  <span className="project-glare" aria-hidden="true" />
-                </a>
-                <div className="project-text" data-reveal="up">
-                  {p.status ? <p className="status"><span aria-hidden="true" />{p.status}</p> : null}
-                  <h3 className="h3" dir="ltr">{p.name}</h3>
-                  <p>{p.summary}</p>
-                  <p className="tags" dir="ltr">{p.stack.join(", ")}</p>
-                  <a className="link" href={p.href} target="_blank" rel="noopener">{c.projects.visit} {p.name}</a>
-                </div>
-              </article>
-            ))}
-          </div>
         </section>
 
         <div className="marquee" aria-hidden="true" dir="ltr">
