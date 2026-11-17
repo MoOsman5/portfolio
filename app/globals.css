@@ -287,7 +287,7 @@ html[dir="rtl"] .project-text .tags, html[dir="rtl"] .feature-name { text-align:
 .hero-facts { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 10px 40px; align-items: baseline; }
 .hero-facts li { display: flex; align-items: baseline; gap: 12px; }
 .hero-facts .counter-l { max-width: 15em; line-height: 1.35; }
-@media (max-width: 720px) {
+@media (max-width: 900px) {
   .hero-facts { flex-wrap: nowrap; gap: 20px; bottom: 24px; right: var(--gutter); }
   .hero-facts li { gap: 8px; }
   .hero-facts li:nth-child(n + 3) { display: none; }

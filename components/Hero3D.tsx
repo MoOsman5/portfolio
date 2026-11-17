@@ -263,9 +263,12 @@ export default function Hero3D() {
       renderer.setSize(W, H, false);
       pm.uniforms.uPixelRatio.value = dpr;
       camera.aspect = W / H;
-      if (W / H > 1.15) camera.setViewOffset(W, H, -W * 0.25, 0, W, H);
-      else camera.clearViewOffset();
-      camera.fov = W / H < 0.8 ? 44 : 30;
+      // Wide: the stack sits to the right of the name. Narrow and tablet: it is pulled back and
+      // lifted so it stays above the name instead of behind the text.
+      const wide = W / H > 1.15;
+      if (wide) camera.setViewOffset(W, H, -W * 0.25, 0, W, H);
+      else camera.setViewOffset(W, H, 0, H * 0.1, W, H);
+      camera.fov = wide ? 30 : Math.min(62, 44 + Math.max(0, W / H - 0.75) * 40);
       camera.updateProjectionMatrix();
     };
     resize();
