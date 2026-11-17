@@ -1,27 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
-import HeroScene from "@/components/HeroScene";
-import Preloader from "@/components/Preloader";
-import Motion from "@/components/Motion";
 import Logo from "@/components/Logo";
-import ShipmentCounter from "@/components/ShipmentCounter";
 import Architecture from "@/components/Architecture";
-import Story from "@/components/Story";
-import { Chars, Words } from "@/components/Split";
-import SlabM from "@/components/SlabM";
-import Cosmos from "@/components/Cosmos";
+import CoverArt from "@/components/Covers";
 import SiteControls from "@/components/SiteControls";
-import { articles } from "@/lib/articles";
+import { articles, readingMinutes } from "@/lib/articles";
 import { site } from "@/lib/site";
 import { content, type Lang } from "@/lib/content";
-
-const marqueeA = ["NestJS", "PostgreSQL", "Redis", "Bull", "TypeScript", "Node.js", "PgBouncer", "Docker", "AWS", "GraphQL"];
-const marqueeB = ["Partitioning", "Read replicas", "Zero-downtime migrations", "Queues", "Caching", "Multi-tenant SaaS", "OpenTelemetry", "Code review"];
 
 export default function HomePage({ lang }: { lang: Lang }) {
   const c = content[lang];
   const ar = lang === "ar";
   const base = ar ? "/ar" : "";
+  const latest = [...articles].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 3);
+  const stops = c.route.stops;
 
   const profileLd = {
     "@context": "https://schema.org",
@@ -30,7 +22,7 @@ export default function HomePage({ lang }: { lang: Lang }) {
     url: `${site.url}${base || "/"}`,
     name: ar ? "محمد عثمان — مهندس باك إند أول" : `${site.name} — ${site.role}`,
     dateCreated: "2026-09-01",
-    dateModified: "2026-10-30",
+    dateModified: "2026-11-17",
     inLanguage: lang,
     isPartOf: { "@id": `${site.url}/#website` },
     mainEntity: { "@id": `${site.url}/#person` },
@@ -40,199 +32,241 @@ export default function HomePage({ lang }: { lang: Lang }) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(profileLd) }} />
-      <Preloader logs={c.loader} />
-      <Cosmos />
-      <Motion />
       <header className="nav">
-        <a href="#top" className="mark" aria-label={c.nav.home} data-magnetic><Logo height={26} title={site.name} /></a>
+        <a href="#top" className="mark" aria-label={c.nav.home}><Logo height={24} title={site.name} /></a>
         <nav aria-label={c.nav.sections}>
-          <a href="#work"><span className="roll" data-text={c.nav.work}>{c.nav.work}</span></a>
-          <a href="#experience"><span className="roll" data-text={c.nav.experience}>{c.nav.experience}</span></a>
-          <a href="#projects"><span className="roll" data-text={c.nav.projects}>{c.nav.projects}</span></a>
-          <Link href="/writing"><span className="roll" data-text={c.nav.writing}>{c.nav.writing}</span></Link>
-          <a href="#contact"><span className="roll" data-text={c.nav.contact}>{c.nav.contact}</span></a>
+          <a href="#work">{c.nav.work}</a>
+          <a href="#now">{c.nav.now}</a>
+          <a href="#projects">{c.nav.projects}</a>
+          <a href="#experience">{c.nav.experience}</a>
+          <Link href="/writing">{c.nav.writing}</Link>
+          <a href="#contact">{c.nav.contact}</a>
         </nav>
         <div className="nav-end">
-          <a className="nav-cv" href={site.cv} download data-magnetic>{c.nav.cv}</a>
           <SiteControls themeLabel={c.toggle.theme} langText={c.toggle.lang} langLabel={c.toggle.langLabel} langHref={c.toggle.langHref} langCode={ar ? "en" : "ar"} />
+          <a className="btn btn-small" href={site.cv} download>{c.nav.cv}</a>
         </div>
       </header>
 
       <main id="main">
-        <section className="hero" id="top" aria-labelledby="hero-title">
-          <div className="hero-map">
-            <HeroScene />
-          </div>
+        <section className="hero wrap">
           <div className="hero-copy">
-            {ar ? (
-              <h1 id="hero-title" className="display display-ar" aria-label={c.hero.name}>
-                <span className="line" aria-hidden="true"><span className="ch" style={{ ["--i" as string]: 0 }}>محمد</span></span>
-                <span className="line indent" aria-hidden="true"><span className="ch" style={{ ["--i" as string]: 3 }}>عثمان</span></span>
-              </h1>
-            ) : (
-              <h1 id="hero-title" className="display" aria-label={c.hero.name}>
-                <span className="line"><SlabM /><Chars text="ohamed" start={1} /></span>
-                <span className="line indent"><Chars text="Osman" start={7} /></span>
-              </h1>
-            )}
+            <h1 className="display">{c.hero.title}</h1>
             <p className="lede">{c.hero.lede}</p>
             <div className="actions">
-              <a className="btn btn-gold" href={`mailto:${site.email}`} data-magnetic><span>{c.hero.email}</span></a>
-              <a className="btn" href={site.cv} download data-magnetic><span>{c.hero.cv}</span></a>
+              <a className="btn" href={`mailto:${site.email}`}>{c.hero.email}</a>
+              <a className="btn btn-ghost" href={site.cv} download>{c.hero.cv}</a>
+              <a className="text-link" href={site.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+              <a className="text-link" href={site.github} target="_blank" rel="noopener">GitHub</a>
             </div>
           </div>
-          <ShipmentCounter label={c.counter} locale={c.numberLocale} />
-          <a href="#work" className="scroll-cue" aria-label={c.hero.scroll}><span /></a>
+
+          <aside className="route" aria-labelledby="route-title">
+            <div className="route-head">
+              <h2 id="route-title">{c.route.title}</h2>
+              <p className="status"><span className="status-dot" aria-hidden="true" />{c.route.status}</p>
+            </div>
+            <ol className="route-stops">
+              {stops.map((s, i) => {
+                const current = i === stops.length - 1;
+                return (
+                  <li key={s.date + s.role} className={current ? "is-now" : undefined} style={{ ["--i" as string]: i }}>
+                    <span className="route-date">{s.date}</span>
+                    <span className="route-what">
+                      <b>{s.place}</b>
+                      <span>{s.role}</span>
+                    </span>
+                    {current && <span className="tag">{c.route.now}</span>}
+                  </li>
+                );
+              })}
+              <li className="is-next" style={{ ["--i" as string]: stops.length }}>
+                <span className="route-date">{c.route.next}</span>
+                <span className="route-what"><span>{c.route.nextBody}</span></span>
+              </li>
+            </ol>
+          </aside>
         </section>
 
-        <Story t={c.story} />
-
-        <section className="section" id="work" aria-labelledby="work-title">
+        <section className="section wrap" id="work" aria-labelledby="work-title">
           <div className="section-head">
-            <h2 id="work-title" className="h2" data-reveal="mask"><Words text={c.work.title} /></h2>
-            <p className="intro" data-reveal="up">{c.work.intro}</p>
+            <h2 id="work-title" className="h2">{c.work.title}</h2>
+            <p className="intro">{c.work.intro}</p>
           </div>
 
-          <dl className="figures" data-reveal="up">
-            <div><dt>{c.work.figures[0]}</dt><dd dir="ltr" data-count="20" data-suffix="M+">20M+</dd></div>
-            <div><dt>{c.work.figures[1]}</dt><dd dir="ltr" data-count="50" data-suffix="K+">50K+</dd></div>
-            <div><dt>{c.work.figures[2]}</dt><dd dir="ltr" data-count="3.7" data-decimals="1" data-suffix="×">3.7×</dd></div>
-            <div><dt>{c.work.figures[3]}</dt><dd dir="ltr" data-count="5">5</dd></div>
+          <dl className="figures">
+            {c.work.figures.map((f) => (
+              <div key={f.label}><dd dir="ltr">{f.value}</dd><dt>{f.label}</dt></div>
+            ))}
           </dl>
 
-          <figure className="arch" data-reveal="fade">
-            <div dir="ltr"><Architecture /></div>
+          <figure className="arch">
+            <div className="arch-scroll" dir="ltr" tabIndex={0} role="group" aria-label={c.work.archLabel}><Architecture label={c.work.archLabel} /></div>
             <figcaption>{c.work.caption}</figcaption>
           </figure>
 
-          <h3 className="h3" data-reveal="mask"><Words text={c.work.decisionsTitle} /></h3>
-          <ul className="decisions">
-            {c.decisions.map((d) => (
-              <li key={d.problem} data-reveal="up">
-                <p className="problem">{d.problem}</p>
-                <p className="answer">{d.answer}</p>
-              </li>
-            ))}
-          </ul>
+          <h3 className="h3">{c.work.decisionsTitle}</h3>
+          <table className="decisions">
+            <thead><tr><th scope="col">{c.work.problem}</th><th scope="col">{c.work.answer}</th></tr></thead>
+            <tbody>
+              {c.decisions.map((d) => (
+                <tr key={d.problem}><th scope="row">{d.problem}</th><td>{d.answer}</td></tr>
+              ))}
+            </tbody>
+          </table>
+
+          <div className="story">
+            <div className="story-head">
+              <h3 className="h3">{c.story.title}</h3>
+              <p>{c.story.sub}</p>
+            </div>
+            <ol className="story-steps">
+              {c.story.steps.map((s) => (
+                <li key={s.title}>
+                  <p className="story-when"><time>{s.time}</time><span>{s.place}</span></p>
+                  <div>
+                    <h4>{s.title}</h4>
+                    <p>{s.body}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <p className="story-coda">{c.story.coda}</p>
+          </div>
         </section>
 
-        <section className="section" id="experience" aria-labelledby="exp-title">
+        <section className="section wrap" id="now" aria-labelledby="now-title">
           <div className="section-head">
-            <h2 id="exp-title" className="h2" data-reveal="mask"><Words text={c.expTitle} /></h2>
+            <h2 id="now-title" className="h2">{c.now.title}</h2>
+            <p className="intro">{c.now.intro}</p>
           </div>
-          <ol className="timeline">
-            {c.experience.map((job) => (
-              <li key={job.company} className="job" data-reveal="up">
-                <div className="job-when">
-                  {job.roles[job.roles.length - 1].from.split(" ")[1]}
-                  <span aria-hidden="true">–</span>
-                  {job.roles[0].to.split(" ")[1]}
-                </div>
-                <div className="job-body">
-                  <h3 className="job-company"><span dir="auto">{job.company}</span><span className="job-place">{job.place}</span></h3>
-                  {job.roles.map((r) => (
-                    <div key={r.title} className="role">
-                      <p className="role-title">
-                        <span dir="auto">{r.title}</span>
-                        <span className="role-dates">{r.from} {c.datesJoin} {r.to}</span>
-                      </p>
-                      <ul>
-                        {r.points.map((p) => <li key={p}>{p}</li>)}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-              </li>
-            ))}
-          </ol>
-        </section>
-
-        <section className="section" id="projects" aria-labelledby="proj-title">
-          <div className="section-head">
-            <h2 id="proj-title" className="h2" data-reveal="mask"><Words text={c.projects.title} /></h2>
-            <p className="intro" data-reveal="up">{c.projects.intro}</p>
-          </div>
-          <div className="projects">
-            {c.projects.items.map((p) => (
-              <article key={p.name} className="project">
-                <a href={p.href} target="_blank" rel="noopener" className="project-shot" aria-label={`${c.projects.open} ${p.name} ${c.projects.inNewTab}`} data-reveal="clip" data-tilt data-cursor={c.projects.visit}>
-                  <span className="project-img" data-parallax="0.06">
-                    <Image src={p.image} alt={`${p.name} ${c.projects.homePage}`} width={p.width} height={p.height} sizes="(max-width: 900px) 100vw, 80vw" />
-                  </span>
-                  <span className="project-glare" aria-hidden="true" />
-                </a>
-                <div className="project-text" data-reveal="up">
-                  {p.status ? <p className="status"><span aria-hidden="true" />{p.status}</p> : null}
-                  <h3 className="h3" dir="ltr">{p.name}</h3>
+          <div className="features">
+            {c.now.items.map((p) => (
+              <article key={p.name} className="feature">
+                <figure className="shot">
+                  {p.image
+                    ? <Image src={p.image} alt={`${p.name} ${c.projects.homePage}`} width={p.width} height={p.height} sizes="(max-width: 900px) 100vw, 55vw" />
+                    : p.cover && <><CoverArt kind={p.cover} /><figcaption className="sr-only">{c.now.illustration}</figcaption></>}
+                </figure>
+                <div className="feature-body">
+                  <h3 className="feature-name" dir="ltr">{p.name}</h3>
+                  <p className="feature-tagline">{p.tagline}</p>
                   <p>{p.summary}</p>
-                  <p className="tags" dir="ltr">{p.stack.join(", ")}</p>
-                  <a className="link" href={p.href} target="_blank" rel="noopener">{c.projects.visit} {p.name}</a>
+                  <ul className="facts">{p.facts.map((f) => <li key={f}>{f}</li>)}</ul>
+                  <ul className="chips" dir="ltr">{p.stack.map((s) => <li key={s}>{s}</li>)}</ul>
+                  {p.href && <a className="text-link" href={p.href} target="_blank" rel="noopener" aria-label={`${c.now.visit}: ${p.name} (${c.projects.inNewTab})`}>{c.now.visit}</a>}
                 </div>
               </article>
             ))}
           </div>
         </section>
 
-        <div className="marquee" aria-hidden="true" dir="ltr">
-          <div className="marquee-row"><div className="marquee-track">{[...marqueeA, ...marqueeA].map((t, i) => <span key={i}>{t}</span>)}</div></div>
-          <div className="marquee-row reverse"><div className="marquee-track">{[...marqueeB, ...marqueeB].map((t, i) => <span key={i}>{t}</span>)}</div></div>
-        </div>
-
-        <section className="section about" id="about" aria-labelledby="about-title">
-          <div className="portrait-wrap" data-reveal="clip">
-            <Image className="portrait" src="/images/mohamed.webp" alt={c.about.portrait} width={600} height={600} />
+        <section className="section wrap" id="projects" aria-labelledby="projects-title">
+          <div className="section-head">
+            <h2 id="projects-title" className="h2">{c.projects.title}</h2>
+            <p className="intro">{c.projects.intro}</p>
           </div>
-          <div>
-            <h2 id="about-title" className="h2" data-reveal="mask"><Words text={c.about.title} /></h2>
-            <p data-reveal="up">{c.about.p1}</p>
-            <p data-reveal="up">{c.about.p2}</p>
-            <dl className="stack">
-              {c.about.stack.map((s) => (
-                <div key={s.group} data-reveal="up">
-                  <dt>{s.group}</dt>
-                  <dd dir="ltr">{s.items.join(", ")}</dd>
-                </div>
-              ))}
-            </dl>
+          <div className="projects">
+            {c.projects.items.map((p) => {
+              const github = p.href?.includes("github.com");
+              return (
+                <article key={p.name} className="project">
+                  <figure className="shot">
+                    {p.image
+                      ? <Image src={p.image} alt={`${p.name} ${c.projects.homePage}`} width={p.width} height={p.height} sizes="(max-width: 900px) 100vw, 45vw" />
+                      : p.cover && <CoverArt kind={p.cover} />}
+                  </figure>
+                  <div className="project-head">
+                    <h3 dir="ltr">{p.name}</h3>
+                    {p.status && <span className="tag tag-quiet">{p.status}</span>}
+                  </div>
+                  <p>{p.summary}</p>
+                  <ul className="chips" dir="ltr">{p.stack.map((s) => <li key={s}>{s}</li>)}</ul>
+                  {p.href && <a className="text-link" href={p.href} target="_blank" rel="noopener" aria-label={`${github ? c.projects.code : c.projects.visit}: ${p.name} (${c.projects.inNewTab})`}>{github ? c.projects.code : c.projects.visit}</a>}
+                </article>
+              );
+            })}
           </div>
         </section>
 
-        <section className="section writing" id="writing" aria-labelledby="writing-title">
+        <section className="section wrap" id="experience" aria-labelledby="exp-title">
           <div className="section-head">
-            <h2 id="writing-title" className="h2" data-reveal="mask"><Words text={c.writing.title} /></h2>
-            <p className="intro" data-reveal="up">{c.writing.intro}</p>
+            <h2 id="exp-title" className="h2">{c.expTitle}</h2>
           </div>
-          <ol className="writing-list">
-            {articles.map((a) => (
-              <li key={a.slug} data-reveal="up" lang={a.lang} dir={a.lang === "ar" ? "rtl" : "ltr"}>
-                <Link href={`/writing/${a.slug}`} data-magnetic>
-                  <time dateTime={a.date}>{a.date.slice(0, 7).replace("-", " · ")}</time>
-                  <span className="writing-title">{a.title}</span>
-                  <span className="writing-arrow" aria-hidden="true">→</span>
+          <div className="jobs">
+            {c.experience.map((j) => (
+              <article key={j.company} className="job">
+                <header>
+                  <h3 dir="ltr">{j.company}</h3>
+                  <p>{j.place}</p>
+                </header>
+                <div className="roles">
+                  {j.roles.map((r) => (
+                    <div key={r.title} className="role">
+                      <h4>{r.title}</h4>
+                      <p className="role-dates">{r.from} {c.datesJoin} {r.to}</p>
+                      <ul>{r.points.map((pt) => <li key={pt}>{pt}</li>)}</ul>
+                    </div>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="section wrap about" id="about" aria-labelledby="about-title">
+          <div className="about-text">
+            <h2 id="about-title" className="h2">{c.about.title}</h2>
+            <p>{c.about.p1}</p>
+            <p>{c.about.p2}</p>
+          </div>
+          <Image className="portrait" src="/images/mohamed.webp" alt={c.about.portrait} width={600} height={600} sizes="(max-width: 900px) 60vw, 280px" />
+          <dl className="stack">
+            {c.about.stack.map((g) => (
+              <div key={g.group}>
+                <dt>{g.group}</dt>
+                <dd>{g.items.join(ar ? "، " : ", ")}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+
+        <section className="section wrap" id="writing" aria-labelledby="writing-title">
+          <div className="section-head">
+            <h2 id="writing-title" className="h2">{c.writing.title}</h2>
+            <p className="intro">{c.writing.intro}</p>
+          </div>
+          <ul className="posts">
+            {latest.map((a) => (
+              <li key={a.slug} lang={a.lang} dir={a.lang === "ar" ? "rtl" : "ltr"}>
+                <Link href={`/writing/${a.slug}`}>
+                  <h3>{a.title}</h3>
+                  <p>{a.description}</p>
                 </Link>
               </li>
             ))}
-          </ol>
-          <p data-reveal="up"><Link href="/writing" className="link">{c.writing.all}</Link></p>
+          </ul>
+          <Link className="text-link" href="/writing">{c.writing.all}</Link>
         </section>
 
         <section className="contact" id="contact" aria-labelledby="contact-title">
-          <h2 id="contact-title" className="h2" data-reveal="mask"><Words text={c.contact.title} /></h2>
-          <a className="email" href={`mailto:${site.email}`} aria-label={`${c.contact.email} ${site.email}`} data-reveal="up" dir="ltr"><Chars text={site.email} /></a>
-          <ul className="contact-links" data-reveal="up">
-            <li><a href={site.phoneHref} dir="ltr"><span className="roll" data-text={site.phone}>{site.phone}</span></a></li>
-            <li><a href={site.whatsapp} target="_blank" rel="noopener"><span className="roll" data-text={c.contact.whatsapp}>{c.contact.whatsapp}</span></a></li>
-            <li><a href={site.linkedin} target="_blank" rel="noopener me"><span className="roll" data-text="LinkedIn">LinkedIn</span></a></li>
-            <li><a href={site.github} target="_blank" rel="noopener me"><span className="roll" data-text="GitHub">GitHub</span></a></li>
-            <li><a href={site.leetcode} target="_blank" rel="noopener me"><span className="roll" data-text="LeetCode">LeetCode</span></a></li>
-            <li><a href={site.cv} download><span className="roll" data-text={c.contact.cv}>{c.contact.cv}</span></a></li>
-          </ul>
+          <div className="wrap">
+            <h2 id="contact-title" className="display">{c.contact.title}</h2>
+            <p className="lede">{c.contact.body}</p>
+            <div className="actions">
+              <a className="btn btn-ink" href={`mailto:${site.email}`}>{c.contact.email}</a>
+              <a className="btn btn-ink-ghost" href={site.whatsapp} target="_blank" rel="noopener">{c.contact.whatsapp}</a>
+              <a className="btn btn-ink-ghost" href={site.linkedin} target="_blank" rel="noopener">{c.contact.linkedin}</a>
+              <a className="btn btn-ink-ghost" href={site.cv} download>{c.contact.cv}</a>
+            </div>
+            <p className="contact-direct" dir="ltr"><a href={`mailto:${site.email}`}>{site.email}</a><a href={site.phoneHref}>{site.phone}</a></p>
+          </div>
         </section>
       </main>
 
-      <footer className="footer">
-        <p className="footer-mark"><Logo height={16} title="" /> <span dir="ltr">© 2026 Mohamed Osman</span></p>
-        <a href="#top" className="to-top" data-magnetic>{c.footer.top}</a>
+      <footer className="footer wrap">
+        <p><Logo height={14} title="" /> © 2026 {ar ? "محمد عثمان" : site.name}</p>
+        <a className="text-link" href="#top">{c.footer.top}</a>
       </footer>
     </>
   );

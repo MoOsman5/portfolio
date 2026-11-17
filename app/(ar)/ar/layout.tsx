@@ -4,7 +4,7 @@ import { site } from "@/lib/site";
 
 const title = "محمد عثمان — مهندس باك إند أول";
 const description =
-  "محمد عثمان مهندس باك إند أول من الجيزة، مصر. صمم وبنى منصة لوجستية من الصفر تتعامل مع أكثر من 20 مليون شحنة سنويًا لأكثر من 50 ألف مستخدم، باستخدام NestJS وPostgreSQL وطوابير Bull وRedis.";
+  "محمد عثمان مهندس باك إند أول من الجيزة، مصر. صمم وبنى منصة لوجستية من الصفر تتعامل مع أكثر من 20 مليون شحنة سنويًا لأكثر من 20 ألف حساب للتجار والشركاء، باستخدام NestJS وPostgreSQL وطوابير Bull وRedis.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -33,8 +33,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#000000",
-  colorScheme: "dark light",
+  themeColor: "#f2f4f6",
+  colorScheme: "light dark",
   width: "device-width",
   initialScale: 1,
 };

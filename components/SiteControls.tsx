@@ -2,14 +2,14 @@
 
 import { useEffect, useState } from "react";
 
-/** Theme toggle (dark is the default) and the link to the other language. */
+/** Theme toggle (light is the default) and the link to the other language. */
 export default function SiteControls({ themeLabel, langText, langLabel, langHref, langCode }: {
   themeLabel: string; langText: string; langLabel: string; langHref: string; langCode: string;
 }) {
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [theme, setTheme] = useState<"dark" | "light">("light");
 
   useEffect(() => {
-    setTheme(document.documentElement.dataset.theme === "light" ? "light" : "dark");
+    setTheme(document.documentElement.dataset.theme === "dark" ? "dark" : "light");
   }, []);
 
   const toggle = () => {
@@ -18,13 +18,13 @@ export default function SiteControls({ themeLabel, langText, langLabel, langHref
     document.documentElement.dataset.theme = next;
     try { localStorage.setItem("theme", next); } catch {}
     const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute("content", next === "light" ? "#f4f0e8" : "#000000");
+    if (meta) meta.setAttribute("content", next === "light" ? "#f2f4f6" : "#0a1420");
   };
 
   return (
     <div className="controls">
       <a className="ctrl ctrl-lang" href={langHref} hrefLang={langCode} lang={langCode} aria-label={langLabel}>{langText}</a>
-      <button type="button" className="ctrl ctrl-theme" onClick={toggle} aria-label={themeLabel} aria-pressed={theme === "light"} title={themeLabel}>
+      <button type="button" className="ctrl ctrl-theme" onClick={toggle} aria-label={themeLabel} aria-pressed={theme === "dark"} title={themeLabel}>
         <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
           {theme === "dark" ? (
             <path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7Z" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />

@@ -7,18 +7,19 @@ import SiteControls from "./SiteControls";
 export default function SiteNav() {
   return (
     <header className="nav nav-inner">
-      <Link href="/" className="mark" aria-label="Mohamed Osman, home" data-magnetic>
-        <Logo height={26} title="Mohamed Osman" />
+      <Link href="/" className="mark" aria-label="Mohamed Osman, home">
+        <Logo height={24} title="Mohamed Osman" />
       </Link>
       <nav aria-label="Site">
-        <Link href="/#work"><span className="roll" data-text="Work">Work</span></Link>
-        <Link href="/#experience"><span className="roll" data-text="Experience">Experience</span></Link>
-        <Link href="/writing"><span className="roll" data-text="Writing">Writing</span></Link>
-        <Link href="/#contact"><span className="roll" data-text="Contact">Contact</span></Link>
+        <Link href="/#work">Work</Link>
+        <Link href="/#projects">Projects</Link>
+        <Link href="/#experience">Experience</Link>
+        <Link href="/writing">Writing</Link>
+        <Link href="/#contact">Contact</Link>
       </nav>
       <div className="nav-end">
-        <a className="nav-cv" href={site.cv} download data-magnetic>Download CV</a>
         <SiteControls themeLabel="Switch light and dark theme" langText="العربية" langLabel="Read the portfolio in Arabic" langHref="/ar" langCode="ar" />
+        <a className="btn btn-small" href={site.cv} download>Download CV</a>
       </div>
     </header>
   );
