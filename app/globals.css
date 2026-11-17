@@ -80,7 +80,7 @@ html, body { overflow-x: clip; }
 .nav nav a, .nav-cv { font-size: 15px; color: var(--ash); text-decoration: none; transition: color 0.2s; }
 .nav nav a:hover, .nav-cv:hover { color: var(--ivory); }
 .nav-cv { color: var(--gold); }
-@media (max-width: 720px) { .nav nav { display: none; } }
+@media (max-width: 900px) { .nav nav { display: none; } }
 
 /* ---------- Hero ---------- */
 .hero {
