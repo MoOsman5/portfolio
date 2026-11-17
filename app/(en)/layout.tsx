@@ -13,7 +13,9 @@ export const metadata: Metadata = {
   creator: site.name,
   keywords: [
     "Mohamed Osman",
+    "Senior Software Engineer",
     "Senior Backend Engineer",
+    "Senior Full Stack Engineer",
     "Backend Engineer Egypt",
     "NestJS developer",
     "Node.js engineer",
@@ -39,7 +41,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     firstName: "Mohamed",
     lastName: "Osman",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Mohamed Osman, Senior Backend Engineer" }],
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Mohamed Osman, Senior Software Engineer" }],
   },
   twitter: { card: "summary_large_image", title, description: site.description, images: ["/og.png"] },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large" } },

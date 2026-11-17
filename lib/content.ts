@@ -8,7 +8,7 @@ const en = {
   toggle: { theme: "Switch light and dark theme", lang: "العربية", langLabel: "Read this page in Arabic", langHref: "/ar" },
   hero: {
     name: "Mohamed Osman",
-    lede: "Senior backend engineer and tech lead in Giza. I design systems that hold up under real load, lead the teams that build them, and ship whole products fast, from the database to the screen.",
+    lede: "Senior software engineer and tech lead in Giza, backend-first. I design systems that hold up under real load, lead the teams that build them, and ship the whole product, from the database to the screen.",
     email: "Email me", cv: "Download CV", scroll: "Scroll to what I do",
   },
   facts: [
@@ -108,7 +108,7 @@ const ar: Content = {
   toggle: { theme: "التبديل بين الوضع الفاتح والداكن", lang: "English", langLabel: "Read this page in English", langHref: "/" },
   hero: {
     name: "محمد عثمان",
-    lede: "مهندس باك إند أول وقائد تقني من الجيزة. أصمم أنظمة تصمد تحت الضغط الحقيقي، وأقود الفرق التي تبنيها، وأسلّم منتجات كاملة بسرعة، من قاعدة البيانات حتى الشاشة.",
+    lede: "مهندس برمجيات أول وقائد تقني من الجيزة، أبدأ من الباك إند. أصمم أنظمة تصمد تحت الضغط الحقيقي، وأقود الفرق التي تبنيها، وأسلّم المنتج كاملًا، من قاعدة البيانات حتى الشاشة.",
     email: "راسلني", cv: "تحميل السيرة الذاتية", scroll: "انتقل إلى الأعمال",
   },
   facts: [

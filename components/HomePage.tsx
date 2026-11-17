@@ -44,7 +44,7 @@ export default function HomePage({ lang }: { lang: Lang }) {
     "@type": "ProfilePage",
     "@id": `${site.url}${base}/#profile`,
     url: `${site.url}${base || "/"}`,
-    name: ar ? "محمد عثمان — مهندس باك إند أول" : `${site.name} — ${site.role}`,
+    name: ar ? "محمد عثمان — مهندس برمجيات أول" : `${site.name} — ${site.role}`,
     dateCreated: "2026-09-01",
     dateModified: "2026-11-17",
     inLanguage: lang,

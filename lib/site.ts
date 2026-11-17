@@ -1,7 +1,7 @@
 export const site = {
   url: "https://mohamed-osman.com",
   name: "Mohamed Osman",
-  role: "Senior Backend Engineer",
+  role: "Senior Software Engineer",
   location: "Giza, Egypt",
   email: "imohamedosmann@gmail.com",
   phone: "+20 10 9590 2696",
@@ -12,7 +12,7 @@ export const site = {
   leetcode: "https://leetcode.com/MoOsman_5/",
   cv: "/Mohamed-Osman-CV.pdf",
   description:
-    "Mohamed Osman is a senior backend engineer and tech lead in Giza, Egypt. He designs systems that hold up under real load, leads the teams that build them, and ships full products with NestJS, PostgreSQL, Redis and React. Built ABS Courier's logistics platform for 20M+ shipments a year.",
+    "Mohamed Osman is a senior software engineer and tech lead in Giza, Egypt: backend-first, with full stack delivery. He designs systems that hold up under real load, leads the teams that build them, and ships whole products with NestJS, PostgreSQL, Redis and React. Built ABS Courier's logistics platform for 20M+ shipments a year.",
 };
 
 export const experience = [

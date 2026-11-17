@@ -1,5 +1,5 @@
 /**
- * The hero scene: a backend system drawn as light. Each node is a service, each route a call
+ * The hero scene: a whole product drawn as light, from the screens people use to the database. Each node is a service, each route a call
  * between two services, and the packets are requests moving through it.
  * Nodes sit on a ground plane (x to the right, z toward the viewer); the first node is the hub.
  */
@@ -7,9 +7,9 @@ export type Node = { name: string; x: number; z: number; weight: number; hub?: b
 
 export const nodes: Node[] = [
   { name: "API", x: -0.4, z: 0, weight: 1, hub: true, label: true },
-  { name: "Web", x: -4.0, z: -1.5, weight: 0.18 },
-  { name: "Clients", x: -4.2, z: 0.1, weight: 0.2, label: true },
-  { name: "Partners", x: -3.9, z: 1.6, weight: 0.18 },
+  { name: "Web app", x: -4.0, z: -1.6, weight: 0.42, label: true },
+  { name: "Dashboard", x: -4.3, z: 0.1, weight: 0.3 },
+  { name: "Mobile app", x: -3.9, z: 1.7, weight: 0.42, label: true },
   { name: "Gateway", x: -2.3, z: 0, weight: 0.32 },
   { name: "Redis", x: -0.3, z: -2.2, weight: 0.5, label: true },
   { name: "PgBouncer", x: 1.3, z: -0.5, weight: 0.3 },
@@ -26,14 +26,14 @@ export const nodes: Node[] = [
 
 // Calls, written in the direction a request travels.
 export const routes: [string, string][] = [
-  ["Web", "Gateway"], ["Clients", "Gateway"], ["Partners", "Gateway"], ["Gateway", "API"],
+  ["Web app", "Gateway"], ["Dashboard", "Gateway"], ["Mobile app", "Gateway"], ["Gateway", "API"],
   ["API", "Redis"], ["API", "PgBouncer"], ["PgBouncer", "PostgreSQL"], ["PgBouncer", "Replica 1"],
   ["PgBouncer", "Replica 2"], ["API", "Queues"], ["Queues", "Worker 1"], ["Queues", "Worker 2"],
-  ["Worker 1", "Notifications"], ["Worker 2", "PostgreSQL"], ["API", "Sockets"], ["Sockets", "Clients"],
+  ["Worker 1", "Notifications"], ["Worker 2", "PostgreSQL"], ["API", "Sockets"], ["Sockets", "Mobile app"],
   ["API", "Metrics"], ["PostgreSQL", "Replica 2"],
 ];
 
 // The path most requests take, drawn as a soft gold line.
-export const spine = ["Clients", "Gateway", "API", "PgBouncer", "PostgreSQL"];
+export const spine = ["Web app", "Gateway", "API", "PgBouncer", "PostgreSQL"];
 
 export const nodeIndex = (n: string) => nodes.findIndex((c) => c.name === n);

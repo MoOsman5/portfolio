@@ -122,7 +122,7 @@ export default async function ArticlePage({ params }: Params) {
         <div>
           <p className="w-author-name">Mohamed Osman</p>
           <p className="w-author-bio">
-            Senior backend engineer in Giza. Designed and built ABS Courier&apos;s logistics platform for 20M+ shipments a
+            Senior software engineer in Giza. Designed and built ABS Courier&apos;s logistics platform for 20M+ shipments a
             year and 20,000+ merchant and partner accounts, and led the backend team behind it.
           </p>
           <Link href="/" className="link">See the work</Link>
