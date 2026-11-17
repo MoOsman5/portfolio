@@ -229,7 +229,9 @@ html, body { overflow-x: clip; }
 .scene canvas { width: 100% !important; height: 100% !important; display: block; }
 .scene::after { content: ""; position: absolute; inset: 0; pointer-events: none;
   background: linear-gradient(90deg, var(--black) 0%, rgba(var(--bg-rgb), 0.75) 22%, rgba(var(--bg-rgb), 0) 48%), linear-gradient(0deg, var(--black) 0%, rgba(var(--bg-rgb), 0) 22%); }
-.scene-label { position: absolute; left: 0; top: 0; z-index: 1; pointer-events: none; will-change: transform; }
+.scene-label { position: absolute; left: 0; top: 0; z-index: 1; pointer-events: none; will-change: transform; opacity: 0; }
+.scene-label:not(.is-hub) span { color: var(--ash); border-color: var(--line-2); }
+@media (max-width: 900px) { .scene-label:not(.is-hub) { display: none; } }
 .scene-label span { display: block; transform: translate(-50%, -140%); font-size: 12px; letter-spacing: 0.04em; color: var(--gold-soft);
   padding: 5px 10px; border: 1px solid rgba(200,169,106,0.4); border-radius: 999px; background: rgba(var(--bg-rgb), 0.6); white-space: nowrap; }
 @media (max-width: 900px) {

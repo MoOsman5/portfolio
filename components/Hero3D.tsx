@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import { cities, routes, cityIndex } from "@/lib/geo";
+import { nodes as cities, routes, spine, nodeIndex as cityIndex } from "@/lib/system";
 import NetworkCanvas from "./NetworkCanvas";
 
 const GOLD = new THREE.Color("#C8A96A");
@@ -63,7 +63,7 @@ const pointFrag = /* glsl */ `
 
 export default function Hero3D() {
   const mount = useRef<HTMLDivElement>(null);
-  const label = useRef<HTMLDivElement>(null);
+  const labels = useRef<HTMLDivElement>(null);
   const [fallback, setFallback] = useState(false);
 
   useEffect(() => {
@@ -89,10 +89,9 @@ export default function Hero3D() {
     world.rotation.y = -0.38;
     scene.add(world);
 
-    // Projection from lon/lat to the ground plane.
-    const K = 0.95;
-    const P = (lon: number, lat: number, y = 0) => new THREE.Vector3((lon - 31.1) * K, y, -(lat - 27.8) * K);
-    const pos = cities.map((c) => P(c.lon, c.lat));
+    // Each service's place on the ground plane. The system is turned so requests flow from the
+    // back of the scene toward the viewer, which keeps it in the right half, clear of the name.
+    const pos = cities.map((c) => new THREE.Vector3(c.z * 0.75 + 0.5, 0, c.x * 0.8));
 
     const disposables: { dispose: () => void }[] = [];
     const track = <T extends { dispose: () => void }>(x: T) => { disposables.push(x); return x; };
@@ -116,16 +115,16 @@ export default function Hero3D() {
       world.add(new THREE.Points(g, m));
     }
 
-    // The Nile, as a soft gold line from Aswan to the Delta.
+    // The path most requests take, as a soft gold line.
     {
-      const nile = ["Aswan", "Luxor", "Qena", "Sohag", "Asyut", "Minya", "Beni Suef", "Giza", "Cairo"].map((n) => pos[cityIndex(n)].clone());
+      const nile = spine.map((n) => pos[cityIndex(n)].clone().setY(0.02));
       const curve = new THREE.CatmullRomCurve3(nile, false, "catmullrom", 0.4);
       const g = track(new THREE.TubeGeometry(curve, 200, 0.012, 6, false));
       const m = track(new THREE.MeshBasicMaterial({ color: GOLD, transparent: true, opacity: 0.35, depthWrite: false }));
       world.add(new THREE.Mesh(g, m));
     }
 
-    // Light pillars, one per city.
+    // Light pillars, one per service.
     const tex = track(glowTexture());
     const pillarMat = track(new THREE.ShaderMaterial({
       transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
@@ -134,9 +133,10 @@ export default function Hero3D() {
       fragmentShader: `uniform vec3 uColor; varying float vY; void main(){ gl_FragColor = vec4(uColor, pow(1.0 - vY, 1.4) * 0.9); }`,
     }));
     let hubRing: THREE.Mesh | null = null;
-    let hubTop = new THREE.Vector3();
+    const tops: THREE.Vector3[] = [];
     cities.forEach((c, i) => {
       const h = 0.25 + c.weight * 2.6;
+      if (c.label) tops.push(pos[i].clone().setY(h + 0.25));
       const g = track(new THREE.CylinderGeometry(c.hub ? 0.03 : 0.014, c.hub ? 0.03 : 0.014, h, 8, 1, true));
       // Flip uv so 0 is the ground.
       const uv = g.getAttribute("uv") as THREE.BufferAttribute;
@@ -153,7 +153,6 @@ export default function Hero3D() {
       world.add(base);
 
       if (c.hub) {
-        hubTop = pos[i].clone().setY(h);
         const rg = track(new THREE.RingGeometry(0.34, 0.36, 64));
         const rm = track(new THREE.MeshBasicMaterial({ color: GOLD, transparent: true, opacity: 0.6, side: THREE.DoubleSide, depthWrite: false }));
         hubRing = new THREE.Mesh(rg, rm);
@@ -163,7 +162,7 @@ export default function Hero3D() {
       }
     });
 
-    // Routes as arcs above the ground.
+    // Calls between services, as arcs above the ground.
     const curves = routes.map(([a, b]) => {
       const p = pos[cityIndex(a)], q = pos[cityIndex(b)];
       const mid = p.clone().add(q).multiplyScalar(0.5);
@@ -288,7 +287,7 @@ export default function Hero3D() {
         const p = packets.find((x) => !x.alive);
         if (!p) break;
         p.alive = true; p.c = Math.floor(Math.random() * curves.length); p.t = 0;
-        p.v = 0.16 + Math.random() * 0.2; p.dir = Math.random() > 0.5 ? 1 : -1;
+        p.v = 0.16 + Math.random() * 0.2; p.dir = Math.random() > 0.15 ? 1 : -1; // most traffic is requests; a few are replies
       }
       for (let i = 0; i < MAX; i++) {
         const p = packets[i];
@@ -321,13 +320,18 @@ export default function Hero3D() {
       renderer.render(scene, camera);
       if (!announced) { announced = true; window.__moScene = true; window.dispatchEvent(new Event("mo:scene")); }
 
-      if (label.current) {
-        tmp.copy(hubTop).setY(hubTop.y + 0.25);
-        world.localToWorld(tmp);
-        tmp.project(camera);
-        const x = (tmp.x * 0.5 + 0.5) * W, y = (-tmp.y * 0.5 + 0.5) * H;
-        label.current.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px)`;
-        label.current.style.opacity = String(Math.max(0, 1 - scroll * 2));
+      const els = labels.current?.children;
+      if (els) {
+        const fade = String(Math.max(0, 1 - scroll * 2) * fly);
+        for (let i = 0; i < els.length; i++) {
+          tmp.copy(tops[i]);
+          world.localToWorld(tmp);
+          tmp.project(camera);
+          const x = (tmp.x * 0.5 + 0.5) * W, y = (-tmp.y * 0.5 + 0.5) * H;
+          const e = els[i] as HTMLElement;
+          e.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px)`;
+          e.style.opacity = fade;
+        }
       }
     };
     const loop = () => {
@@ -367,6 +371,9 @@ export default function Hero3D() {
   if (fallback) return <NetworkCanvas />;
   return (
     <div ref={mount} className="scene" aria-hidden="true">
+      <div ref={labels} className="scene-labels" dir="ltr">
+        {cities.filter((c) => c.label).map((c) => <div key={c.name} className={`scene-label${c.hub ? " is-hub" : ""}`}><span>{c.name}</span></div>)}
+      </div>
     </div>
   );
 }
