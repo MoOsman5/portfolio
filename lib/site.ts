@@ -12,7 +12,7 @@ export const site = {
   leetcode: "https://leetcode.com/MoOsman_5/",
   cv: "/Mohamed-Osman-CV.pdf",
   description:
-    "Mohamed Osman is a senior backend engineer in Giza, Egypt. He designed and built ABS Courier's logistics platform from scratch, now handling 20M+ shipments a year for 20,000+ merchant and partner accounts, with NestJS, PostgreSQL, Bull queues and Redis.",
+    "Mohamed Osman is a senior backend engineer and tech lead in Giza, Egypt. He designs systems that hold up under real load, leads the teams that build them, and ships full products with NestJS, PostgreSQL, Redis and React. Built ABS Courier's logistics platform for 20M+ shipments a year.",
 };
 
 export const experience = [

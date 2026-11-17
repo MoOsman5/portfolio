@@ -5,26 +5,28 @@ import { useEffect, useRef, useState } from "react";
 type StepText = { time: string; place: string; title: string; body: string };
 export type StoryText = { title: string; sub: string; coda: string; logLabel: string; stations: string[]; steps: StepText[] };
 
-// A simplified walk through one shipment. Each step is something the platform actually does.
+// Six strengths. Each step carries the evidence behind it, taken from real work.
 const logs: string[][] = [
-  ["POST /shipments", "validate CreateShipmentDto", "201 Created"],
-  ["INSERT INTO shipments", "→ partition shipments_2026_10"],
-  ["queue.add('notifications')", "worker: whatsapp.sent"],
-  ["event: shipment.scanned", "SET cache tracking:latest", "GET /track (public API)"],
-  ["event: shipment.delivered", "worker: whatsapp.sent"],
-  ["PgBouncer → replica-1", "SELECT … daily_report"],
+  ["PARTITION BY RANGE (created_at)", "reads → replicas via PgBouncer", "20M+ shipments a year"],
+  ["EXPLAIN → seq scan on every partition", "ANALYZE, then nightly at 02:00", "timeout → under 100 ms"],
+  ["team of 5, then team of 7", "requirements from operations", "ADRs and code review"],
+  ["at = serverNow + 350 ms", "emit('show-event') → the whole room", "drift > 140 ms → resync"],
+  ["scope: all | branch | own", "OIDC + PKCE, rotating tokens", "40,936 checks, 0 issues"],
+  ["plan → Claude Code implements", "review every diff", "tests pass → deploy"],
 ];
 
-// Route stations on the little map (viewBox 0 0 320 520): Alexandria, Cairo, Asyut, Aswan.
+// One node per strength on the constellation (viewBox 0 0 320 520).
 const stations = [
-  { name: "Alexandria", x: 92, y: 52 },
-  { name: "Cairo", x: 150, y: 118 },
-  { name: "Asyut", x: 168, y: 300 },
-  { name: "Aswan", x: 232, y: 468 },
+  { name: "Scale", x: 84, y: 48 },
+  { name: "Diagnosis", x: 232, y: 124 },
+  { name: "Leadership", x: 96, y: 212 },
+  { name: "Real time", x: 240, y: 298 },
+  { name: "Trust", x: 92, y: 386 },
+  { name: "Speed", x: 226, y: 470 },
 ];
-const ROUTE = "M92 52 C 118 78, 132 98, 150 118 S 150 220, 168 300 S 212 410, 232 468";
-// Which station the parcel is at during each step; it travels in the last part of a step.
-const atStation = [0, 0, 0, 1, 3, 3];
+const ROUTE = "M84 48 C 150 36, 210 78, 232 124 S 150 182, 96 212 S 222 250, 240 298 S 140 350, 92 386 S 190 438, 226 470";
+// The spark rests on one node per step and travels to the next in the last part of the step.
+const atStation = [0, 1, 2, 3, 4, 5];
 
 export default function Story({ t }: { t: StoryText }) {
   const steps = t.steps.map((st, i) => ({ ...st, log: logs[i] }));
@@ -32,7 +34,7 @@ export default function Story({ t }: { t: StoryText }) {
   const routeRef = useRef<SVGPathElement>(null);
   const [p, setP] = useState(0);
   const [len, setLen] = useState(1000);
-  const [stationT, setStationT] = useState([0, 0.2, 0.55, 1]);
+  const [stationT, setStationT] = useState([0, 0.2, 0.4, 0.6, 0.8, 1]);
 
   useEffect(() => {
     const path = routeRef.current;
@@ -100,14 +102,13 @@ export default function Story({ t }: { t: StoryText }) {
               <defs>
                 <radialGradient id="pkGlow"><stop offset="0" stopColor="#E8D4A8" stopOpacity="0.9" /><stop offset="1" stopColor="#E8D4A8" stopOpacity="0" /></radialGradient>
               </defs>
-              <path d="M40 30 C 120 10, 220 20, 290 40 M60 30 C 110 90, 120 200, 150 300 S 230 440, 250 510" className="story-coast" />
               <path ref={routeRef} d={ROUTE} className="story-route-bg" />
               <path d={ROUTE} className="story-route" style={{ strokeDasharray: len, strokeDashoffset: len * (1 - routeT) }} />
               {stations.map((s, i) => (
                 <g key={s.name} className={`story-station ${reached(i) ? "on" : ""}`}>
                   <circle cx={s.x} cy={s.y} r="5" />
                   <circle cx={s.x} cy={s.y} r="12" className="story-station-ring" />
-                  <text x={s.x + (i === 0 ? -14 : 18)} y={s.y + 4} textAnchor={i === 0 ? "end" : "start"}>{t.stations[i]}</text>
+                  <text x={s.x + (s.x > 160 ? -20 : 20)} y={s.y + (i === stations.length - 1 ? 6 : -14)} textAnchor={s.x > 160 ? "end" : "start"}>{t.stations[i]}</text>
                 </g>
               ))}
               <g transform={`translate(${point.x} ${point.y})`} className="story-parcel">

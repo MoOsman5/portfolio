@@ -367,9 +367,6 @@ export default function Hero3D() {
   if (fallback) return <NetworkCanvas />;
   return (
     <div ref={mount} className="scene" aria-hidden="true">
-      <div ref={label} className="scene-label">
-        <span>Cairo hub</span>
-      </div>
     </div>
   );
 }

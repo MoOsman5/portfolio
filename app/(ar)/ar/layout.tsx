@@ -4,7 +4,7 @@ import { site } from "@/lib/site";
 
 const title = "محمد عثمان — مهندس باك إند أول";
 const description =
-  "محمد عثمان مهندس باك إند أول من الجيزة، مصر. صمم وبنى منصة لوجستية من الصفر تتعامل مع أكثر من 20 مليون شحنة سنويًا لأكثر من 20 ألف حساب للتجار والشركاء، باستخدام NestJS وPostgreSQL وطوابير Bull وRedis.";
+  "محمد عثمان مهندس باك إند أول وقائد تقني من الجيزة، مصر. يصمم أنظمة تصمد تحت الضغط الحقيقي، ويقود الفرق التي تبنيها، ويسلّم منتجات كاملة بـNestJS وPostgreSQL وRedis وReact. بنى منصة ABS Courier اللوجستية لأكثر من 20 مليون شحنة سنويًا.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),

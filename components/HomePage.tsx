@@ -4,7 +4,6 @@ import HeroScene from "@/components/HeroScene";
 import Preloader from "@/components/Preloader";
 import Motion from "@/components/Motion";
 import Logo from "@/components/Logo";
-import ShipmentCounter from "@/components/ShipmentCounter";
 import Architecture from "@/components/Architecture";
 import Story from "@/components/Story";
 import { Chars, Words } from "@/components/Split";
@@ -65,8 +64,8 @@ export default function HomePage({ lang }: { lang: Lang }) {
         <nav aria-label={c.nav.sections}>
           <a href="#work"><span className="roll" data-text={c.nav.work}>{c.nav.work}</span></a>
           <a href="#now"><span className="roll" data-text={c.nav.now}>{c.nav.now}</span></a>
-          <a href="#experience"><span className="roll" data-text={c.nav.experience}>{c.nav.experience}</span></a>
           <a href="#projects"><span className="roll" data-text={c.nav.projects}>{c.nav.projects}</span></a>
+          <a href="#experience"><span className="roll" data-text={c.nav.experience}>{c.nav.experience}</span></a>
           <Link href="/writing"><span className="roll" data-text={c.nav.writing}>{c.nav.writing}</span></Link>
           <a href="#contact"><span className="roll" data-text={c.nav.contact}>{c.nav.contact}</span></a>
         </nav>
@@ -99,8 +98,10 @@ export default function HomePage({ lang }: { lang: Lang }) {
               <a className="btn" href={site.cv} download data-magnetic><span>{c.hero.cv}</span></a>
             </div>
           </div>
-          <ShipmentCounter label={c.counter} locale={c.numberLocale} />
-          <a href="#work" className="scroll-cue" aria-label={c.hero.scroll}><span /></a>
+          <ul className="counter hero-facts">
+            {c.facts.map((f) => <li key={f.label}><span className="counter-n" dir="ltr">{f.value}</span><span className="counter-l">{f.label}</span></li>)}
+          </ul>
+          <a href="#story" className="scroll-cue" aria-label={c.hero.scroll}><span /></a>
         </section>
 
         <Story t={c.story} />
@@ -156,6 +157,30 @@ export default function HomePage({ lang }: { lang: Lang }) {
           </div>
         </section>
 
+        <section className="section" id="projects" aria-labelledby="proj-title">
+          <div className="section-head">
+            <h2 id="proj-title" className="h2" data-reveal="mask"><Words text={c.projects.title} /></h2>
+            <p className="intro" data-reveal="up">{c.projects.intro}</p>
+          </div>
+          <div className="projects">
+            {c.projects.items.map((p) => {
+              const code = p.href?.includes("github.com");
+              return (
+                <article key={p.name} className="project">
+                  <Shot p={p} label={`${c.projects.open} ${p.name} ${c.projects.inNewTab}`} alt={`${p.name} ${c.projects.homePage}`} cursor={code ? c.projects.code : c.projects.visit} />
+                  <div className="project-text" data-reveal="up">
+                    {p.status ? <p className="status"><span aria-hidden="true" />{p.status}</p> : null}
+                    <h3 className="h3" dir="ltr">{p.name}</h3>
+                    <p>{p.summary}</p>
+                    <p className="tags" dir="ltr">{p.stack.join(", ")}</p>
+                    {p.href ? <a className="link" href={p.href} target="_blank" rel="noopener">{code ? c.projects.code : `${c.projects.visit} ${p.name}`}</a> : null}
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+
         <section className="section" id="experience" aria-labelledby="exp-title">
           <div className="section-head">
             <h2 id="exp-title" className="h2" data-reveal="mask"><Words text={c.expTitle} /></h2>
@@ -185,30 +210,6 @@ export default function HomePage({ lang }: { lang: Lang }) {
               </li>
             ))}
           </ol>
-        </section>
-
-        <section className="section" id="projects" aria-labelledby="proj-title">
-          <div className="section-head">
-            <h2 id="proj-title" className="h2" data-reveal="mask"><Words text={c.projects.title} /></h2>
-            <p className="intro" data-reveal="up">{c.projects.intro}</p>
-          </div>
-          <div className="projects">
-            {c.projects.items.map((p) => {
-              const code = p.href?.includes("github.com");
-              return (
-                <article key={p.name} className="project">
-                  <Shot p={p} label={`${c.projects.open} ${p.name} ${c.projects.inNewTab}`} alt={`${p.name} ${c.projects.homePage}`} cursor={code ? c.projects.code : c.projects.visit} />
-                  <div className="project-text" data-reveal="up">
-                    {p.status ? <p className="status"><span aria-hidden="true" />{p.status}</p> : null}
-                    <h3 className="h3" dir="ltr">{p.name}</h3>
-                    <p>{p.summary}</p>
-                    <p className="tags" dir="ltr">{p.stack.join(", ")}</p>
-                    {p.href ? <a className="link" href={p.href} target="_blank" rel="noopener">{code ? c.projects.code : `${c.projects.visit} ${p.name}`}</a> : null}
-                  </div>
-                </article>
-              );
-            })}
-          </div>
         </section>
 
         <div className="marquee" aria-hidden="true" dir="ltr">

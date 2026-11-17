@@ -280,3 +280,15 @@ html[lang="ar"] .project-text .feature-tagline { font-style: normal; line-height
 div.project-shot { cursor: default; }
 html[dir="rtl"] .project-text .tags, html[dir="rtl"] .feature-name { text-align: right; }
 @media (prefers-reduced-motion: reduce) { .pop-phone { animation: none; } }
+
+/* Hero facts (replaces the shipment counter) */
+.hero-facts { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 10px 40px; align-items: baseline; }
+.hero-facts li { display: flex; align-items: baseline; gap: 12px; }
+.hero-facts .counter-l { max-width: 15em; line-height: 1.35; }
+@media (max-width: 720px) {
+  .hero-facts { flex-wrap: nowrap; gap: 20px; bottom: 24px; right: var(--gutter); }
+  .hero-facts li { gap: 8px; }
+  .hero-facts li:nth-child(n + 3) { display: none; }
+  .hero-facts .counter-n { font-size: 22px; }
+  .hero-facts .counter-l { font-size: 12px; max-width: 10em; }
+}
